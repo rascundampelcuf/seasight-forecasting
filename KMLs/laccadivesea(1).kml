@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>laccadive sea</name>
+    <Style id="poly-000000-1200-77-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>4d000000</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-000000-1200-77-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>4d000000</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-000000-1200-77-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-000000-1200-77-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-000000-1200-77-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>Laccadive Sea</name>
+      <styleUrl>#poly-000000-1200-77-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              75.6906831,11.0708795,0
+              73.4055269,9.7743023,0
+              71.9553316,7.6023872,0
+              71.2082613,4.8066455,0
+              70.9445894,3.5356334,0
+              70.9006441,1.4283565,0
+              72.7024019,-1.6035127,0
+              75.4709566,-2.5257552,0
+              79.0744722,-2.2623137,0
+              81.2277925,-0.9884387,0
+              82.5022066,0.7253601,0
+              82.8537691,3.4917707,0
+              83.117441,6.0315909,0
+              82.6779878,8.2552616,0
+              81.711191,9.5143572,0
+              80.6565035,10.2503373,0
+              79.9533785,10.6392907,0
+              79.2502535,9.904199,0
+              78.766855,9.1674569,0
+              77.9318941,8.3857098,0
+              77.2287691,8.0812637,0
+              76.3938081,8.9504712,0
+              75.8664644,9.8609058,0
+              75.6906831,11.0708795,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+  </Document>
+</kml>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Timor Sea</name>
+    <Style id="poly-000000-1200-77-nodesc-normal">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.2</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>4d000000</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-000000-1200-77-nodesc-highlight">
+      <LineStyle>
+        <color>ff000000</color>
+        <width>1.8</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>4d000000</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-000000-1200-77-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-000000-1200-77-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-000000-1200-77-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>Timor Sea</name>
+      <styleUrl>#poly-000000-1200-77-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              127.0474725,-8.7141457,0
+              125.5093866,-9.3217723,0
+              124.6744256,-10.0581788,0
+              123.8394647,-10.4473703,0
+              123.2681756,-11.0518054,0
+              121.8619256,-10.7497392,0
+              124.4546991,-16.0907511,0
+              124.5425897,-15.1172747,0
+              125.992785,-13.9687901,0
+              126.9156366,-13.6700778,0
+              127.7505975,-14.1819196,0
+              128.2779412,-14.6926085,0
+              129.2886834,-14.6926085,0
+              129.7720819,-13.8408174,0
+              130.1236444,-12.600206,0
+              131.3541131,-12.0850527,0
+              132.4966912,-11.9561076,0
+              132.4527459,-11.6549976,0
+              131.7496209,-11.1811677,0
+              130.91466,-8.4968929,0
+              128.9371209,-8.3230019,0
+              127.0474725,-8.7141457,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+  </Document>
+</kml>
