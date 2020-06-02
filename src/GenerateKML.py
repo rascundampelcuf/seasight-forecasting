@@ -6,7 +6,7 @@ Created on Mon Jun  1 09:34:47 2020
 """
 
 # Import libraries
-from simplekml import Kml
+import simplekml
 import xml.etree.ElementTree as ET
 
 def GetCoordinates(tree):
@@ -19,6 +19,15 @@ def GetCoordinates(tree):
 
 def GenerateKML(tree):
     coords = GetCoordinates(tree)
+    
+    kml = simplekml.Kml()
+    pol = kml.newpolygon()
+    pol.outerboundaryis.coords = coords
+    pol.style.linestyle.color = simplekml.Color.green
+    pol.style.linestyle.width = 5
+    pol.style.polystyle.color = simplekml.Color.changealphaint(100, simplekml.Color.green)
+    print(pol)
+    kml.save("Polygon.kml")
     
 
 kml_file = '../KMLs/NorthAtlanticOcean.kml'
