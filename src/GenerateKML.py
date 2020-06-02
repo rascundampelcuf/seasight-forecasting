@@ -14,7 +14,7 @@ def GetCoordinates(tree):
     coords = root.findall('.//{http://www.opengis.net/kml/2.2}coordinates')[0].text
     coords = coords.strip()
     coords = str.splitlines(coords)
-    coords = [x.strip() for x in coords]
+    coords = [tuple(x.strip().split(',')) for x in coords]
     return coords
 
 def GenerateKML(tree):
