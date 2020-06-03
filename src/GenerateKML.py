@@ -11,6 +11,7 @@ from lxml import etree
 import xml.etree.ElementTree as ET
 import pandas as pd
 from pykml.factory import KML_ElementMaker as KML
+import matplotlib
 
 #%%
 
@@ -45,12 +46,26 @@ data_path = '../data/dummy_data.csv'
 data = pd.read_csv(data_path)
 
 #%%
+
+def GenerateSquareCoordsFromCenter(lon, lat, width):
+    point_a = '\n{},{},0\n'.format(lon - width/2, lat + width/2)
+    point_b = '{},{},0\n'.format(lon + width/2, lat + width/2)
+    point_c = '{},{},0\n'.format(lon + width/2, lat - width/2)
+    point_d = '{},{},0\n'.format(lon - width/2, lat - width/2)
+    return ' '.join([point_a, point_b, point_c, point_d])
+
+def GetColorFromTemperature(temp):
+    cmap = matplotlib.cm.get_cmap('Spectral')
+    rgb = cmap(temp)[:3]
+    print(rgb)
+    return matplotlib.colors.rgb2hex(rgb)[1:]
+
 data2 = data[:25]
 
 fich_kml = KML.kml(
-    KML.Document(
+    KML.Document(        
         KML.Folder(
-            KML.name('Temperatures'),
+            KML.name('Temperature regions'),
             id='lugares'
             )
         )
@@ -59,12 +74,19 @@ fich_kml = KML.kml(
 for _, row in data2.iterrows():
     fich_kml.Document.Folder.append(
         KML.Placemark(
+            KML.name('{}, {}'.format(row.LON, row.LAT)),
             KML.Style(
-                
-                ),
-            KML.Point(
-                KML.coordinates("{0},{1},0".format(row.LON,row.LAT))
-                )           
+                # KML.PolyStyle(KML.color('{}'.format(GetColorFromTemperature(row.SST))))
+                KML.LineStyle(KML.color('ff008000'), KML.width('5')),
+                KML.PolyStyle(KML.color('64008000'))
+            ),
+            KML.Polygon(
+                KML.outerBoundaryIs(
+                    KML.LinearRing(
+                        KML.coordinates(GenerateSquareCoordsFromCenter(row.LON, row.LAT, 0.5))
+                        )
+                    )
+                )
             )
         )
 
