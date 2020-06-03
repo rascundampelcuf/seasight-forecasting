@@ -7,7 +7,12 @@ Created on Mon Jun  1 09:34:47 2020
 
 # Import libraries
 import simplekml
+from lxml import etree
 import xml.etree.ElementTree as ET
+import pandas as pd
+from pykml.factory import KML_ElementMaker as KML
+
+#%%
 
 def GetCoordinates(tree):
     root = tree.getroot()
@@ -30,6 +35,40 @@ def GenerateKML(tree):
     kml.save("Polygon.kml")
     
 
-kml_file = '../KMLs/NorthAtlanticOcean.kml'
+kml_file = '../data/KMLs/NorthAtlanticOcean.kml'
 tree = ET.parse(kml_file)
 GenerateKML(tree)
+
+#%%
+
+data_path = '../data/dummy_data.csv'
+data = pd.read_csv(data_path)
+
+#%%
+data2 = data[:25]
+
+fich_kml = KML.kml(
+    KML.Document(
+        KML.Folder(
+            KML.name('Temperatures'),
+            id='lugares'
+            )
+        )
+    )
+
+for _, row in data2.iterrows():
+    fich_kml.Document.Folder.append(
+        KML.Placemark(
+            KML.Style(
+                
+                ),
+            KML.Point(
+                KML.coordinates("{0},{1},0".format(row.LON,row.LAT))
+                )           
+            )
+        )
+
+f = open("test.kml", "w")
+out = etree.tostring(fich_kml, pretty_print=True).decode("utf-8")
+f.write(out)
+f.close()
