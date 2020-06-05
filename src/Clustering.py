@@ -19,15 +19,24 @@ data = pd.read_csv(data_path)
 
 #%%
 
-data2 = data[:25]
+data2 = data[:100]
 print(data2)
 
 
-data2 = distance.squareform(data2)
-threshold = 0.3
-linkage = hierarchy.linkage(data2, method="single")
-clusters = hierarchy.fcluster(linkage, threshold, criterion="distance")
+methods = ['single', 'complete', 'average', 'weighted', 'centroid', 'median', 'ward']
 
-plt.subplot(111)
-hierarchy.dendrogram(linkage, color_threshold=0.3)
+fig, ax = plt.subplots(4, 2, figsize=(8, 8))
+plt.subplots_adjust(hspace = .4)
+
+for i in range(len(methods)):
+    threshold = 0.3
+    linkage = hierarchy.linkage(data2, method=methods[i])
+    
+    clusters = hierarchy.fcluster(linkage, threshold, criterion='distance')
+    
+    temp = 421+i
+    ax=plt.subplot(temp)
+    
+    hierarchy.dendrogram(linkage, color_threshold=0.3)
+    ax.set_title('Method: {}'.format(methods[i]))
 plt.show()
