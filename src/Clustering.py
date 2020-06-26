@@ -5,38 +5,52 @@ Created on Thu Jun  4 14:20:33 2020
 @author: gizqu
 """
 
-
 # Import libraries
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.cluster import hierarchy
+from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.spatial import distance
+from sklearn.cluster import AgglomerativeClustering
+import scipy.cluster.hierarchy as shc
+from polylidar import extractPlanesAndPolygons, extractPolygons, Delaunator
 
 #%%
 
-data_path = '../data/dummy_data.csv'
+data_path = '../data/dummy_data2.csv'
 data = pd.read_csv(data_path)
 
 #%%
 
-data2 = data[:100]
-print(data2)
+X = data
+print(X)
 
+#%%
 
-methods = ['single', 'complete', 'average', 'weighted', 'centroid', 'median', 'ward']
-
-fig, ax = plt.subplots(4, 2, figsize=(8, 8))
-plt.subplots_adjust(hspace = .4)
-
-for i in range(len(methods)):
-    threshold = 0.3
-    linkage = hierarchy.linkage(data2, method=methods[i])
-    
-    clusters = hierarchy.fcluster(linkage, threshold, criterion='distance')
-    
-    temp = 421+i
-    ax=plt.subplot(temp)
-    
-    hierarchy.dendrogram(linkage, color_threshold=0.3)
-    ax.set_title('Method: {}'.format(methods[i]))
+plt.figure(figsize=(10, 7))
+plt.scatter(X.rLON, X.rLAT)
 plt.show()
+
+#%%
+
+plt.figure(figsize=(10, 7))
+dend = shc.dendrogram(shc.linkage(X, method='ward'))
+#%%
+
+cluster = AgglomerativeClustering(n_clusters=31, affinity='euclidean', linkage='ward')
+cluster.fit_predict(X)
+print(cluster.labels_)
+X['labels'] = cluster.labels_
+
+plt.figure(figsize=(10, 7))
+plt.scatter(X.rLON, X.rLAT, c=cluster.labels_, cmap='rainbow')
+plt.show()
+
+#%%
+
+kwargs = dict(alpha=0.0, lmax=1.0)
+
+points = X[X.labels == 28]
+point_cloud = points[['rLAT', 'rLON']].to_numpy()
+delaunay, planes, polygons = extractPlanesAndPolygons(point_cloud, **kwargs)
+polygons = extractPolygons(point_cloud, **kwargs)
+print(polygons)
