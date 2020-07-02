@@ -97,7 +97,7 @@ def main():
     data = LoadData('../data/dummy_data2.csv')
     data = GetClusters(n_clusters, data)
     regions = GetRegions(n_clusters, data, InitCmap(data.SST))
-    CreateKML(regions, '../data/final KMLs/test4.kml')
+    CreateKML(regions, '../data/final KMLs/SST_regions.kml')
 
 if __name__ == '__main__':
     main()
