@@ -9,8 +9,10 @@ Created on Wed Jul  1 12:28:13 2020
 import math
 import matplotlib as mpl
 import matplotlib.cm as cm
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pylab as pl
 from lxml import etree
 from pykml.factory import KML_ElementMaker as KML
 from scipy.spatial import ConvexHull
@@ -31,7 +33,18 @@ def rgb_to_hex(rgb):
 def InitCmap(SST):
     norm = mpl.colors.Normalize(SST.min(), SST.max())
     cmap = cm.viridis_r
-    return cm.ScalarMappable(norm=norm, cmap=cmap)
+    smap = cm.ScalarMappable(norm=norm, cmap=cmap)
+    
+    
+    fig = plt.figure(figsize=(8, 3), facecolor = "white")
+    fig.patch.set_alpha(0.0) 
+    ax = fig.add_axes([0.05, 0.80, 0.9, 0.15])
+    ax.patch.set_alpha(0.0)
+    cb = mpl.colorbar.ColorbarBase(ax, cmap=cmap,
+                                norm=norm,
+                                orientation='horizontal')
+
+    return smap
 
 def GetClusters(n_clusters, data):
     cluster = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
@@ -43,7 +56,7 @@ def GetRegions(n_clusters, data, cmap):
     regions = []
     for cluster in range(n_clusters):
         points = data[data.labels == cluster]    
-        point_cloud = points[['rLON', 'rLAT']].to_numpy()
+        point_cloud = points[['LON', 'LAT']].to_numpy()
         hull = ConvexHull(point_cloud)
         # Get first point from ConvexHull lines in order to create a polygon
         pts = np.vstack([point_cloud[x] for x in hull.simplices])
@@ -92,13 +105,3 @@ def CreateKML(regions, path):
     f.write(out)
     f.close()
 
-
-def main():
-    n_clusters = 51
-    data = LoadData('../data/dummy_data2.csv')
-    data = GetClusters(n_clusters, data)
-    regions = GetRegions(n_clusters, data, InitCmap(data.SST))
-    CreateKML(regions, '../data/final KMLs/SST_regions.kml')
-
-if __name__ == '__main__':
-    main()
