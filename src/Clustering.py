@@ -73,7 +73,8 @@ def CreateKML(regions, path):
             KML.Placemark(
                 KML.Style(
                 KML.PolyStyle(
-                    KML.color(color)
+                    KML.color(color),
+                    KML.outline(0)
                     )
                 ),
                 KML.Polygon(
