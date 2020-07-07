@@ -12,20 +12,11 @@ import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pylab as pl
-from lxml import etree
-from pykml.factory import KML_ElementMaker as KML
 from scipy.spatial import ConvexHull
 from sklearn.cluster import AgglomerativeClustering
 
 def LoadData(data_path):    
     return pd.read_csv(data_path)
-
-def GetCoords(region):
-    string = ''
-    for p in region:
-        string += '{},{},0\n'.format(p[0], p[1])
-    return string
 
 def rgb_to_hex(rgb):
     return 'ff%02x%02x%02x' % (int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))
@@ -71,37 +62,4 @@ def GetRegions(n_clusters, data, cmap):
         region.append(rgb_to_hex(cmap.to_rgba(points.SST.mean())))
         regions.append(region)
     return regions
-
-def CreateKML(regions, path):
-    fich_kml = KML.kml(
-        KML.Document(        
-            KML.Folder(
-                KML.name('Temperature regions'))
-            )
-        )
-    
-    for region in regions:
-        color = region.pop()
-        fich_kml.Document.Folder.append(
-            KML.Placemark(
-                KML.Style(
-                KML.PolyStyle(
-                    KML.color(color),
-                    KML.outline(0)
-                    )
-                ),
-                KML.Polygon(
-                    KML.outerBoundaryIs(
-                        KML.LinearRing(
-                            KML.coordinates(GetCoords(region))
-                            )
-                        )
-                    )
-                )
-            )
-    
-    f = open(path, "w")
-    out = etree.tostring(fich_kml, pretty_print=True).decode("utf-8")
-    f.write(out)
-    f.close()
 

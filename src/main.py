@@ -7,6 +7,7 @@ Created on Mon Jul  6 12:26:04 2020
 
 from Clustering import *
 from GetBounds import *
+from GenerateKML import *
 
 def main():
     n_clusters = 100

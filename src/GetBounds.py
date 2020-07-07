@@ -26,6 +26,5 @@ def GetBounds():
     down = lat - height
     return left, right, up, down, message
 
-
 def GetDataFromBounds(data, left, right, up, down):
     return data[(data['LAT'].between(down, up)) & (data['LON'].between(left, right))]
