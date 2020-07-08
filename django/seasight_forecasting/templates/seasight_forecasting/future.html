@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html> 
+<html>
+    <link rel="stylesheet" type="text/css" href="{% static 'seasight_forecasting/styles/style.css' %}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <head>
+        <title>Seasight Forecasting App</title>
+    </head>
+    <body>
+        <div class="header">
+            <div class="head_logo">
+                <a href="/"><img src="{% static "seasight_forecasting/img/SEASIGHT_fit.png" %}" class="logo2"></a>
+            </div>
+            <div class="head_banner">
+                <div class="crop">
+                    <img src="{% static "seasight_forecasting/img/marine_temp_futuristic.jpg" %}" class="header_img">
+                </div>
+            </div>
+        </div>            
+
+        <h1>Future visualization</h1>
+    </body>
+</html>
