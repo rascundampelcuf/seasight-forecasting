@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html> 
+<html>
+    <link rel="stylesheet" type="text/css" href="{% static 'seasight_forecasting/styles/style.css' %}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <head>
+        <title>Seasight Forecasting App</title>
+    </head>
+    <body>
+        <img src="{% static "seasight_forecasting/img/SEASIGHT_fit.png" %}" class="logo">
+        <div class="container">
+            <div class="column">
+                <img src="{% static "seasight_forecasting/img/marine_temp_vintage.jpg" %}" class="case_img">
+                <center>
+                    <form action="past">
+                        <input type="submit" value="Historic" class="button" />
+                    </form>
+                </center>
+            </div>
+            <div class="column">
+                <img src="{% static "seasight_forecasting/img/marine_temp.jpg" %}" class="case_img">
+                <center>
+                    <form action="present">
+                        <input type="submit" value="Real time" class="button" />
+                    </form>
+                </center>
+            </div>
+            <div class="column">
+                <img src="{% static "seasight_forecasting/img/marine_temp_futuristic.jpg" %}" class="case_img">
+                <center>
+                    <form action="future">
+                        <input type="submit" value="Future" class="button" />
+                    </form>
+                </center>
+            </div>
+        </div>
+    </body>
+</html>
