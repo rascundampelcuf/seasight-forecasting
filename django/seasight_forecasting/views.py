@@ -6,8 +6,26 @@ from seasight_forecasting.Clustering import *
 from seasight_forecasting.GetBounds import *
 from seasight_forecasting.GenerateKML import *
 
+def index(request):
+    return render(request, 'seasight_forecasting/index.html', {})
+
 def app(request):
     return render(request, 'seasight_forecasting/app.html', {})
+
+def past(request):
+    return render(request, 'seasight_forecasting/past.html', {})
+
+def present(request):
+    return render(request, 'seasight_forecasting/present.html', {})
+
+def future(request):
+    return render(request, 'seasight_forecasting/future.html', {})
+
+def generateHistoricKML(request):
+    import ctypes  # An included library with Python install.
+    alt = request.POST.get('dateFrom')[0]  
+    ctypes.windll.user32.MessageBoxW(0, alt, "Your title", 0)
+    return HttpResponseRedirect('/past')
 
 def submit(request):
     alt = request.POST.get('altitude')
