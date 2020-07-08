@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html> 
+<html>
+    <link rel="stylesheet" type="text/css" href="{% static 'seasight_forecasting/styles/style.css' %}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script>
+        function enableDateTo() {
+            var checkBox = document.getElementById("enableDateTo");
+            var datePicker = document.getElementById("dateTo");
+            datePicker.disabled = true;
+            if (checkBox.checked == true){
+                datePicker.disabled = false;
+            }
+        }
+    </script>
+    <head>
+        <title>Seasight Forecasting App</title>
+    </head>
+    <body>
+        <div class="header">
+            <div class="head_logo">
+                <a href="/"><img src="{% static "seasight_forecasting/img/SEASIGHT_fit.png" %}" class="logo2"></a>
+            </div>
+            <div class="head_banner">
+                <div class="crop">
+                    <img src="{% static "seasight_forecasting/img/marine_temp_vintage.jpg" %}" class="header_img">
+                </div>
+            </div>
+        </div>            
+
+        <h1>Historic visualization</h1>
+        <input type="checkbox" id="enableDateTo" onclick="enableDateTo()">
+        <form action="generateHistoricKML/" method="POST">
+            <span>From:</span><input type="date" id="dateFrom" name="dateFrom">
+            <span>To:</span><input type="date" id="dateTo" name="dateTo" disabled>
+            <input type="submit">
+        </form>
+    </body>
+</html>
