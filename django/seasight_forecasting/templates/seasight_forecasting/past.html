@@ -38,10 +38,19 @@
             <div>                
                 <form action="generateHistoricKML/" method="POST">
                     {% csrf_token %}
-                    <span>Region: </span><span id="region">--</span><br>
-                    <span>From: </span><input type="date" id="dateFrom" name="dateFrom"><br>
-                    <input type="checkbox" checked="unchecked" id="enableDateTo">
-                    <span>To: </span><input type="date" id="dateTo" name="dateTo" disabled>
+                    <div>
+                        <span>Region: </span>
+                        <span id="region">--</span>
+                    </div>
+                    <div>
+                        <span>From: </span>
+                        <input type="date" id="dateFrom" name="dateFrom">
+                    </div>
+                    <div>
+                        <input type="checkbox" id="enableDateTo">
+                        <span>To: </span>
+                        <input type="date" id="dateTo" name="dateTo" disabled>
+                    </div>
                     <input type="submit">
                 </form>
             </div>
