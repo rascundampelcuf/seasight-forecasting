@@ -6,13 +6,15 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
-        $('#enableDateTo').change(function() {
-            $('#dateTo').prop("disabled", true);
-            if(this.checked) {
-                $('#dateTo').prop("disabled", false);
-            }     
-        });        
-    </script>    
+        $(function() {
+            $('#enableDateTo').change(function() {
+                $("#dateTo").attr("disabled", true);
+                if (this.checked) {
+                    $("#dateTo").removeAttr("disabled");                    
+                }
+            });
+        });
+    </script>  
     <head>
         <title>Seasight Forecasting App</title>
     </head>
