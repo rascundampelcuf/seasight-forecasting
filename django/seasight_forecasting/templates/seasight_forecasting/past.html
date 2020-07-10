@@ -33,44 +33,15 @@
             <div>
                 <canvas id="myCanvas" width="725" height="500" style="border:1px solid #d3d3d3;">
                     Your browser does not support the HTML canvas tag.</canvas>
-                    
-                    <script>
-                        function drawbackground(canvas, context, onload){
-                            var imagePaper = new Image();
-                                imagePaper.onload = function(){
-                                    context.drawImage(imagePaper, 0, 0, 725, 500);
-                                    onload(canvas, context);
-                                };
-
-                            imagePaper.src = '{% static "seasight_forecasting/img/world_map.jpg" %}';
-                        }
-                        function drawlines(canvas, ctx){
-                            // Atlantic north + mediterranean rectangle
-                            ctx.beginPath();
-                            ctx.lineWidth = "6";
-                            ctx.strokeStyle = "red";
-                            ctx.rect(180, 100, 240, 200);
-                            ctx.stroke();
-
-                            // Atlantic south rectangle
-                            ctx.beginPath();
-                            ctx.lineWidth = "6";
-                            ctx.strokeStyle = "red";
-                            ctx.rect(220, 300, 170, 170);
-                            ctx.stroke();
-                        }
-                        var canvas = document.getElementById("myCanvas");
-                        var context = canvas.getContext("2d");
-                        context.clearRect(0, 0, canvas.width, canvas.height);
-                        drawbackground(canvas, context, drawlines);
-                    </script>
+                <script src="{% static 'seasight_forecasting/scripts/canvas.js' %}"></script>
             </div>
             <div>                
                 <form action="generateHistoricKML/" method="POST">
                     {% csrf_token %}
-                    <span>From:</span><input type="date" id="dateFrom" name="dateFrom">
+                    <span>Region: </span><span id="region">--</span><br>
+                    <span>From: </span><input type="date" id="dateFrom" name="dateFrom"><br>
                     <input type="checkbox" checked="unchecked" id="enableDateTo">
-                    <span>To:</span><input type="date" id="dateTo" name="dateTo" disabled>
+                    <span>To: </span><input type="date" id="dateTo" name="dateTo" disabled>
                     <input type="submit">
                 </form>
             </div>
