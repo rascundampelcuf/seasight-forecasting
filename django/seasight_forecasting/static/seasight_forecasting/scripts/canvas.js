@@ -27,7 +27,7 @@ var regionDict = {
 }
 
 function setRegion(region) {
-    document.getElementById("region").innerHTML = regionDict[region];
+    document.getElementById("region").value = regionDict[region];
 }
 
 var canvas = document.getElementById("myCanvas");
