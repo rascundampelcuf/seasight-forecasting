@@ -25,7 +25,7 @@
                 {% include "./canvas.html" %}
             </div>
             <div>                
-                <form action="generateFutureKML/" method="POST" id="formKML">
+                <form action="{% url 'future' %}" method="POST" id="formKML">
                     {% csrf_token %}                    
                     <div>
                         <span>Region: </span>
