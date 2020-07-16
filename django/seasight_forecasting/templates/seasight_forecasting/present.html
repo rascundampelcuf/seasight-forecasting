@@ -20,5 +20,20 @@
         </div>            
 
         <h1>Real time visualization</h1>
+        <div class="container">
+            <div>
+                {% include "./canvas.html" %}
+            </div>
+            <div>                
+                <form action="generateRealTimeKML/" method="POST" id="formKML">
+                    {% csrf_token %}                    
+                    <div>
+                        <span>Region: </span>
+                        <input type="text" id="region" name="region" value="--" readonly="readonly">
+                    </div>
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
     </body>
 </html>
