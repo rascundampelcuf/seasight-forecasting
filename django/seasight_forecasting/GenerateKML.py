@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jun  1 09:34:47 2020
-
-@author: gizqu
-"""
 
 # Import libraries
 from lxml import etree

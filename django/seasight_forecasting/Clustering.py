@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jul  1 12:28:13 2020
-
-@author: gizqu
-"""
 
 # Import libraries
 import math
@@ -34,7 +29,6 @@ def InitCmap(SST):
     cb = mpl.colorbar.ColorbarBase(ax, cmap=cmap,
                                 norm=norm,
                                 orientation='horizontal')
-
     return smap
 
 def GetClusters(n_clusters, data):
