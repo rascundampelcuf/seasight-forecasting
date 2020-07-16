@@ -21,38 +21,38 @@
     <body>
         <div class="header">
             <div class="head_logo">
-                <a href="/"><img src="{% static "seasight_forecasting/img/SEASIGHT_fit.png" %}" class="logo2"></a>
+                <a href="/"><img src="{% static 'seasight_forecasting/img/SEASIGHT_fit.png' %}" class="logo2"></a>
             </div>
             <div class="head_banner">
                 <div class="crop">
-                    <img src="{% static "seasight_forecasting/img/marine_temp_vintage.jpg" %}" class="header_img">
+                    <img src="{% static 'seasight_forecasting/img/marine_temp_vintage.jpg' %}" class="header_img">
                 </div>
             </div>
         </div>            
 
         <h1>Historic visualization</h1>
+        {{ response }}
         <div class="container">
             <div>
-                <canvas id="myCanvas" width="725" height="500" style="border:1px solid #d3d3d3;">
-                    Your browser does not support the HTML canvas tag.</canvas>
-                <script src="{% static 'seasight_forecasting/scripts/canvas.js' %}"></script>
+                {% include "./canvas.html" %}
             </div>
             <div>                
-                <form action="generateHistoricKML/" method="POST">
-                    {% csrf_token %}
+                <form action="{% url 'past' %}" method="POST">
+                    {% csrf_token %}                    
                     <div>
                         <span>Region: </span>
-                        <span id="region">--</span>
+                        <input type="text" id="region" name="region" value="--" readonly="readonly">
                     </div>
                     <div>
                         <span>From: </span>
                         <input type="date" id="dateFrom" name="dateFrom">
                     </div>
                     <div>
-                        <input type="checkbox" id="enableDateTo">
+                        <input type="checkbox" id="enableDateTo" name="check">
                         <span>To: </span>
                         <input type="date" id="dateTo" name="dateTo" disabled>
                     </div>
+                    {% include "./app.html" %}
                     <input type="submit">
                 </form>
             </div>
