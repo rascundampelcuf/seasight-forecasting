@@ -16,7 +16,7 @@ This project is developed in a context of a scolarship in the program Google Sum
 ## Installing / Getting started
 [Install Guide](../master/docs/INSTALL.md)
 
-## __Built With__
+### Built With
 Python3, Django
 
 ## Licensing
