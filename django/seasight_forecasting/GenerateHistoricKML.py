@@ -12,7 +12,7 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon):
     try:
         data = GetClusters(n_clusters, data)
         regions = GetRegions(n_clusters, data, InitCmap(data.SST))
-        path = '../data/final KMLs/SST_regions-' + label + '.kml'
+        path = '../data/SST_regions.kml'
         CreateKML(regions, path)
         message = 'Created KML file in {}'.format(path)
     except Exception as e:
