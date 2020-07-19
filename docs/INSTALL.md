@@ -40,13 +40,15 @@
    ```
    pip3 install -r django/requirements.txt
    ```
-   * Wait (it could take some time compiling the sources)
 
 ## For LG master
-1. Add in php-interface/kmls.txt the following line:
-    * http://<SERVER-IP>:21/Seasight-Forecasting/data/SST_regions.kml
+1. Add in /var/www/html/kmls.txt the following line:
+    ```
+    http://<SERVER-IP>:81/Seasight-Forecasting/data/SST_regions.kml
+    ```
 
 ## RUN
 1. Run the application with:
     ```
     python3 django/manage.py runserver
+    ```
