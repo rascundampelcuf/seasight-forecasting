@@ -55,5 +55,5 @@
 ## RUN
 1. Run the application with:
     ```
-    python3 django/manage.py runserver
+    python django/manage.py runserver
     ```
