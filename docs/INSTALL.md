@@ -2,7 +2,7 @@
 ## Common Steps
 1. Install packages
     ```
-    sudo apt install git python3-pip
+    sudo apt install git python3-pip python3-tk
     ```
 
 2. Upgrade pip3
@@ -39,6 +39,11 @@
 2. Install requirements
    ```
    pip3 install -r django/requirements.txt
+   ```
+
+3. Apply migrations
+   ```
+   python manage.py migrate
    ```
 
 ## For LG master
