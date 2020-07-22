@@ -65,3 +65,8 @@
   top: 0px;
   left: 0px;
 }
+
+/* Validation */
+.textVal {
+  color: red;
+}
