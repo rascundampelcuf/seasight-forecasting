@@ -43,7 +43,7 @@
 
 3. Apply migrations
    ```
-   python manage.py migrate
+   python django/manage.py migrate
    ```
 
 ## For LG master
