@@ -65,3 +65,42 @@ canvas.onclick  = function(e) {
 
     setRegion(region);
 };
+
+function validatePastForm() {
+    var toreturn = 1;
+    var region = document.forms["GenerateKML"]["region"].value;
+    var dateFrom = document.forms["GenerateKML"]["dateFrom"].value;
+    var check = document.forms["GenerateKML"]["check"].checked;
+    var dateTo = document.forms["GenerateKML"]["dateTo"].value;
+    document.getElementById("regionVal").innerHTML = "";
+    document.getElementById("dateFromVal").innerHTML = "";
+    document.getElementById("dateToVal").innerHTML = "";
+    if (region == "--") {
+        document.getElementById("regionVal").innerHTML = "Choose a region over the map.";
+        toreturn = 0;
+    }
+    if (dateFrom == "") {
+        document.getElementById("dateFromVal").innerHTML = "Choose a date.";
+        toreturn = 0;
+    }
+    if (check == true && dateTo == "") {
+        document.getElementById("dateToVal").innerHTML = "Choose a date.";
+        toreturn = 0;
+    }
+    if (toreturn == 0) {
+        return false;
+    }
+}
+
+function validateForm() {
+    var toreturn = 1;
+    var region = document.forms["GenerateKML"]["region"].value;
+    document.getElementById("regionVal").innerHTML = "";
+    if (region == "--") {
+        document.getElementById("regionVal").innerHTML = "Choose a region over the map.";
+        toreturn = 0;
+    }
+    if (toreturn == 0) {
+        return false;
+    }
+}
