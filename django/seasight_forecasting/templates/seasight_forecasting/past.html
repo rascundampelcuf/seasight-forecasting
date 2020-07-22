@@ -14,7 +14,12 @@
                 }
             });
         });
-    </script>  
+        $(function() {
+            $('#dateFrom').change(function() {
+                $("#dateTo").attr("min", $(this).val());
+            });
+        });
+    </script>
     <head>
         <title>Seasight Forecasting App</title>
     </head>
@@ -37,20 +42,23 @@
                 {% include "./canvas.html" %}
             </div>
             <div>                
-                <form action="{% url 'past' %}" method="POST">
+                <form action="{% url 'past' %}" method="POST" name="GenerateKML" onsubmit="return validatePastForm()">
                     {% csrf_token %}                    
                     <div>
                         <span>Region: </span>
                         <input type="text" id="region" name="region" value="--" readonly="readonly">
+                        <span id="regionVal" class="textVal"></span>
                     </div>
                     <div>
                         <span>From: </span>
-                        <input type="date" id="dateFrom" name="dateFrom">
+                        <input type="date" id="dateFrom" name="dateFrom" min="{{min_date}}" max="{{max_date}}">
+                        <span id="dateFromVal" class="textVal"></span>
                     </div>
                     <div>
                         <input type="checkbox" id="enableDateTo" name="check">
                         <span>To: </span>
-                        <input type="date" id="dateTo" name="dateTo" disabled>
+                        <input type="date" id="dateTo" name="dateTo" min="{{min_date}}" max="{{max_date}}" disabled>
+                        <span id="dateToVal" class="textVal"></span>
                     </div>
                     {% include "./app.html" %}
                     <input type="submit">
