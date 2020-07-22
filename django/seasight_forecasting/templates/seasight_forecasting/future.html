@@ -20,16 +20,18 @@
         </div>            
 
         <h1>Future visualization</h1>
+        {{ response }}
         <div class="container">
             <div>
                 {% include "./canvas.html" %}
             </div>
             <div>                
-                <form action="{% url 'future' %}" method="POST" id="formKML">
+                <form action="{% url 'future' %}" method="POST" id="formKML" name="GenerateKML" onsubmit="return validateForm()">
                     {% csrf_token %}                    
                     <div>
                         <span>Region: </span>
                         <input type="text" id="region" name="region" value="--" readonly="readonly">
+                        <span id="regionVal" class="textVal"></span>
                     </div>
                     <input type="submit">
                 </form>
