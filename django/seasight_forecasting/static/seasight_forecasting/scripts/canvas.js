@@ -19,8 +19,8 @@ function drawlines(ctx) {
 }
 var regionDict = {
     0: "--",
-    1: "Atlantic North Ocean",
-    2: "Atlantic South Ocean",
+    1: "North Atlantic Ocean",
+    2: "South Atlantic Ocean",
     3: "Indian Ocean",
     4: "West Pacific Ocean",
     5: "East Pacific Ocean"
