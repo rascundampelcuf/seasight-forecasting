@@ -8,8 +8,8 @@ def LoadData(data_path):
 
 def GetDataFromRegion(data, region):
     regions = {
-        "Atlantic North Ocean": '../data/regions/atlantic_north.geojson',
-        "Atlantic South Ocean": '../data/regions/atlantic_south.geojson',
+        "North Atlantic Ocean": '../data/regions/north_atlantic.geojson',
+        "South Atlantic Ocean": '../data/regions/south_atlantic.geojson',
         "Indian Ocean": '../data/regions/indian.geojson',
         "West Pacific Ocean": '../data/regions/west_pacific.geojson',
         "East Pacific Ocean": '../data/regions/east_pacific.geojson',
