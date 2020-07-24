@@ -11,8 +11,8 @@ def app(request):
     return render(request, 'seasight_forecasting/app.html', {})
 
 def past(request):
+    min_date, max_date = GetDate()
     if request.method == 'GET':
-        min_date, max_date = GetDate()
         context = {'min_date': min_date, 'max_date': max_date}
     else:
         region = request.POST.get('region')
@@ -23,7 +23,7 @@ def past(request):
         lat = request.POST.get('latitude')
         lon = request.POST.get('longitude')
         message = GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon)
-        context = {'response': message}
+        context = {'response': message, 'min_date': min_date, 'max_date': max_date}
     return render(request, 'seasight_forecasting/past.html', context)
 
 def present(request):
