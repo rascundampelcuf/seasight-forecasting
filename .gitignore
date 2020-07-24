@@ -1,2 +1,5 @@
 
 django/db.sqlite3
+src/
+
+*.pyc
