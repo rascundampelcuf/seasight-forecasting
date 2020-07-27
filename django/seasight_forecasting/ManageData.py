@@ -1,11 +1,57 @@
 
+import cdsapi
 import datetime
+import os
+import shutil
+import zipfile
 import geopandas as gpd
 import pandas as pd
+import xarray as xr
 from shapely.ops import cascaded_union
 
 def LoadData(data_path):    
     return pd.read_csv(data_path)
+
+def GetDataFromAPI():
+    data = ''
+    tmpPath = 'tmp/'
+    filePath = 'file/'
+
+    os.mkdir(tmpPath)
+
+    c = cdsapi.Client()
+    c.retrieve(
+        'satellite-sea-surface-temperature',
+        {
+            'processinglevel': 'level_4',
+            'sensor_on_satellite': 'combined_product',
+            'version': '2_0',
+            'year': '2018',
+            'month': '12',
+            'day': '31',
+            'variable': 'all',
+            'format': 'zip',
+        },
+        tmpPath + 'download.zip')
+
+    with zipfile.ZipFile(tmpPath + 'download.zip', 'r') as zip_ref:
+        zip_ref.extractall(tmpPath + filePath)
+    
+    for filename in os.listdir(tmpPath + filePath):
+        print(filename)
+        ds = xr.open_dataset(tmpPath + filePath + '/' + filename)
+        df = (ds.to_dataframe()).dropna()
+        df = df.rename(columns={"analysed_sst": "sst"})
+        df = df.drop(['analysis_uncertainty', 'sea_ice_fraction', 'mask'], axis=1).reset_index()
+        df['sst'] = df['sst'].apply(lambda x: x - 273,15)
+        df['lat'] = df['lat'].apply(lambda x: round(x * 2) / 2)
+        df['lon'] = df['lon'].apply(lambda x: round(x * 2) / 2)
+        data = df.groupby(['time', 'lat', 'lon'])['sst'].mean().reset_index()
+    
+    shutil.rmtree(tmpPath, ignore_errors=True)
+    print('Temporary files removed!')
+
+    return data
 
 def GetDataFromRegion(data, region):
     regions = {
