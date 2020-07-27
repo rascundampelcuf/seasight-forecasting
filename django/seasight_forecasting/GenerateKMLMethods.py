@@ -1,8 +1,9 @@
 
-from seasight_forecasting.ManageData import *
 from seasight_forecasting.Clustering import *
 from seasight_forecasting.GetBounds import *
 from seasight_forecasting.GenerateKML import *
+from seasight_forecasting.ManageData import *
+from seasight_forecasting.ManageModel import *
 
 def GetDate():
     data = LoadData('../data/past.csv')
@@ -20,6 +21,7 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon):
     data.lat = pd.to_numeric(data.lat, downcast="float")
     data.sst = pd.to_numeric(data.sst, downcast="float")
     data = GetDataFromRegion(data, region)
+    print(data)
     # alt, lat, lon = GetParameters()
     #left, right, up, down = GetBounds(alt, lat, lon)
     #data = GetDataFromBounds(data, left, right, up, down)
@@ -39,11 +41,13 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon):
 
 def GenerateRealTimeKML(region, alt, lat, lon):
     n_clusters = 200
-    data = LoadData('../data/present.csv')
+    #data = LoadData('../data/present.csv')
+    data = GetDataFromAPI()
     data.lon = pd.to_numeric(data.lon, downcast="float")
     data.lat = pd.to_numeric(data.lat, downcast="float")
     data = data.drop(['time'], axis=1)
     data = GetDataFromRegion(data, region)
+    print(data)
     # alt, lat, lon = GetParameters()
     # left, right, up, down = GetBounds(alt, lat, lon)
     # data = GetDataFromBounds(data, left, right, up, down)
@@ -58,12 +62,16 @@ def GenerateRealTimeKML(region, alt, lat, lon):
     return message
 
 def GenerateFutureKML(region, alt, lat, lon):
-    n_clusters = 200
-    data = LoadData('../data/future.csv')    
+    n_clusters = 500
+    data = LoadData('../data/past.csv')    
+    model = LoadRNNModel()
+    data = NewPrediction(data, model)
+    print(model)
     data.lon = pd.to_numeric(data.lon, downcast="float")
     data.lat = pd.to_numeric(data.lat, downcast="float")
     data = data.drop(['time'], axis=1)
     data = GetDataFromRegion(data, region)
+    print(data)
     # alt, lat, lon = GetParameters()
     # left, right, up, down = GetBounds(alt, lat, lon)
     # data = GetDataFromBounds(data, left, right, up, down)
