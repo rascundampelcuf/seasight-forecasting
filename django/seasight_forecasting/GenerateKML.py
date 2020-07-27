@@ -8,7 +8,7 @@ from pykml.factory import KML_ElementMaker as KML
 def GetCoords(region):
     string = ''
     for p in region:
-        string += '{},{},0\n'.format(p[0], p[1])
+        string += '{},{},20000\n'.format(p[0], p[1])
     return string
 
 def CreateKML(regions, path, withDate):
@@ -43,6 +43,7 @@ def CreateKML(regions, path, withDate):
                     )
                 ),
                 KML.Polygon(
+                    KML.altitudeMode('absolute'),
                     KML.outerBoundaryIs(
                         KML.LinearRing(
                             KML.coordinates(GetCoords(region))
