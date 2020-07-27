@@ -19,6 +19,4 @@ def NewPrediction(data, model):
         if len(sst_list) >= 2:
             pred = model.predict(sst_list[:2])
             ndf.append({'lat': lat, 'lon': lon, 'sst': pred}, ignore_index = True)
-
-    new_predictions = model.predict(x_test)
-    return data
+    return ndf
