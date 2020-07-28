@@ -63,15 +63,25 @@ def GenerateRealTimeKML(region, alt, lat, lon):
 
 def GenerateFutureKML(region, alt, lat, lon):
     n_clusters = 500
-    data = LoadData('../data/past.csv')    
-    model = LoadRNNModel()
-    data = NewPrediction(data, model)
-    print(model)
-    data.lon = pd.to_numeric(data.lon, downcast="float")
-    data.lat = pd.to_numeric(data.lat, downcast="float")
+    data = LoadData('../data/present.csv')
     data = data.drop(['time'], axis=1)
+    data.lon = pd.to_numeric(data.lon, errors='coerce').fillna(0).astype(float)
+    data.lat = pd.to_numeric(data.lat, errors='coerce').fillna(0).astype(float)
+    data.sst = pd.to_numeric(data.sst, errors='coerce').fillna(0).astype(float)
     data = GetDataFromRegion(data, region)
     print(data)
+
+    model = LoadLRModel()
+    print(model)
+    data = LRPrediction(data, model)
+
+    #model = LoadRNNModel()
+    #print(model)
+    #data = data.drop(['time'], axis=1)
+    #print(type(data.lon[0]))
+    #data.lon = pd.to_numeric(data.lon, downcast="float")
+    #data.lat = pd.to_numeric(data.lat, downcast="float")
+    #data = NewPrediction(data, model)
     # alt, lat, lon = GetParameters()
     # left, right, up, down = GetBounds(alt, lat, lon)
     # data = GetDataFromBounds(data, left, right, up, down)
