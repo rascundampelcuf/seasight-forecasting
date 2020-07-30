@@ -2,15 +2,19 @@ import subprocess
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
+from seasight_forecasting.ConfigurationFile import *
 from seasight_forecasting.GenerateKMLMethods import *
 
+from seasight_forecasting import global_vars
+
 def index(request):
+    LoadConfigFile()
     return render(request, 'seasight_forecasting/index.html', {})
 
 def app(request):
     return render(request, 'seasight_forecasting/app.html', {})
 
-def past(request):
+def past(request):    
     min_date, max_date = GetDate()
     if request.method == 'GET':
         context = {'min_date': min_date, 'max_date': max_date}
