@@ -17,12 +17,13 @@ def GetDate():
 
 def PrepareData(data):
     data.time = pd.to_datetime(data.time, errors='coerce', format='%Y-%m-%d %H:%M:%S')
-    data.lon = pd.to_numeric(data.sst, errors='coerce').fillna(0).astype(float)
-    data.lat = pd.to_numeric(data.sst, errors='coerce').fillna(0).astype(float)
+    data.lon = pd.to_numeric(data.lon, errors='coerce').fillna(0).astype(float)
+    data.lat = pd.to_numeric(data.lat, errors='coerce').fillna(0).astype(float)
     data.sst = pd.to_numeric(data.sst, errors='coerce').fillna(0).astype(float)
     return data
 
 def CreateSingleFrameKML(data):
+    print('Number of clusters: {}'.format(global_vars.number_of_clusters))
     data = GetClusters(global_vars.number_of_clusters, data)
     regions = GetRegions(global_vars.number_of_clusters, data, InitCmap(data['sst']), False)
     CreateKML(regions, global_vars.kml_destination, False)
