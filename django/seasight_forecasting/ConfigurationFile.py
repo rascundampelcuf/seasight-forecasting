@@ -19,6 +19,7 @@ def LoadConfigFile():
     global_vars.west_pacific_region_path = config['FILES']['regions_path'] + config['FILES']['west_pacific_region_file']
     global_vars.east_pacific_region_path = config['FILES']['regions_path'] + config['FILES']['east_pacific_region_file']
     global_vars.kml_destination = config['FILES']['kml_destination_path'] + config['FILES']['kml_destination_file']
+    global_vars.image_destination_path = config['FILES']['image_destination_path']
 
     global_vars.number_of_clusters = int(config['KML']['number_of_clusters'])
     
