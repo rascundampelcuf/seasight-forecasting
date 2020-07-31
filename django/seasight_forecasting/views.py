@@ -16,40 +16,30 @@ def app(request):
 
 def past(request):    
     min_date, max_date = GetDate()
-    if request.method == 'GET':
-        context = {'min_date': min_date, 'max_date': max_date}
-    else:
-        region = request.POST.get('region')
-        dateFrom = request.POST.get('dateFrom')
-        check = request.POST.get('check')
-        dateTo = request.POST.get('dateTo')
-        alt = request.POST.get('altitude')
-        lat = request.POST.get('latitude')
-        lon = request.POST.get('longitude')
-        message = GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon)
-        context = {'response': message, 'min_date': min_date, 'max_date': max_date}
+    context = {'min_date': min_date, 'max_date': max_date}
+
+    region = request.POST.get('region')
+    dateFrom = request.POST.get('dateFrom')
+    check = request.POST.get('check')
+    dateTo = request.POST.get('dateTo')
+    alt = request.POST.get('altitude')
+    lat = request.POST.get('latitude')
+    lon = request.POST.get('longitude')
+    GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon)
     return render(request, 'seasight_forecasting/past.html', context)
 
 def present(request):
-    if request.method == 'GET':
-        context = {}
-    else:
-        region = request.POST.get('region')
-        alt = request.POST.get('altitude')
-        lat = request.POST.get('latitude')
-        lon = request.POST.get('longitude')
-        message = GenerateRealTimeKML(region, alt, lat, lon)
-        context = {'response': message}
-    return render(request, 'seasight_forecasting/present.html', context)
+    region = request.POST.get('region')
+    alt = request.POST.get('altitude')
+    lat = request.POST.get('latitude')
+    lon = request.POST.get('longitude')
+    GenerateRealTimeKML(region, alt, lat, lon)
+    return render(request, 'seasight_forecasting/present.html', {})
 
 def future(request):
-    if request.method == 'GET':
-        context = {}
-    else:
-        region = request.POST.get('region')
-        alt = request.POST.get('altitude')
-        lat = request.POST.get('latitude')
-        lon = request.POST.get('longitude')
-        message = GenerateFutureKML(region, alt, lat, lon)
-        context = {'response': message}
-    return render(request, 'seasight_forecasting/future.html', context)
+    region = request.POST.get('region')
+    alt = request.POST.get('altitude')
+    lat = request.POST.get('latitude')
+    lon = request.POST.get('longitude')
+    GenerateFutureKML(region, alt, lat, lon)
+    return render(request, 'seasight_forecasting/future.html', {})

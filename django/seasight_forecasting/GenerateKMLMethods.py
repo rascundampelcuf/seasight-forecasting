@@ -8,7 +8,6 @@ from seasight_forecasting.ManageData import *
 from seasight_forecasting.ManageModel import *
 
 def GetDate():
-    print('########################## {}'.format(global_vars.historic_file_path))
     data = LoadData(global_vars.historic_file_path)
     data.time = pd.to_datetime(data.time, errors='coerce', format='%Y-%m-%d %H:%M:%S')
     min_date = str(data.time.min().date())
@@ -54,7 +53,7 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon):
         message = 'Created KML file in {}'.format(global_vars.kml_destination)
     except Exception as e:
         message = "ERROR: {}".format(e)
-    return message
+    print(message)
 
 def GenerateRealTimeKML(region, alt, lat, lon):    
     data = GetDataFromAPI()
@@ -63,7 +62,7 @@ def GenerateRealTimeKML(region, alt, lat, lon):
     print('ORIGINAL DATA:')
     print(data)
     data = GetDataFromRegion(data, region)
-    print('DATA AFTER REGION FILTER:')
+    print('DATA AFTER REGION FILTERING:')
     print(data)
     # alt, lat, lon = GetParameters()
     # left, right, up, down = GetBounds(alt, lat, lon)
@@ -72,15 +71,16 @@ def GenerateRealTimeKML(region, alt, lat, lon):
     message = CreateSingleFrameKML(data)
     #except Exception as e:
         #message = "ERROR: {}".format(e)
-    return message
+    print(message)
 
 def GenerateFutureKML(region, alt, lat, lon):
     data = LoadData(global_vars.historic_file_path)
     data = data[data.time == data.time.tail(1)[data.time.tail(1).index.start]]
     data = PrepareData(data)
-    data = data.drop(['time'], axis=1)
+    data = data.drop(['time'], axis=1)    
+    print('ORIGINAL DATA:')
     data = GetDataFromRegion(data, region)
-    print('DATA AFTER REGION FILTER:')
+    print('DATA AFTER REGION FILTERING:')
     print(data)
     model = LoadLRModel()
     data = LRPrediction(data, model)
@@ -101,4 +101,4 @@ def GenerateFutureKML(region, alt, lat, lon):
         message = CreateSingleFrameKML(data)
     except Exception as e:
         message = "ERROR: {}".format(e)
-    return message
+    print(message)

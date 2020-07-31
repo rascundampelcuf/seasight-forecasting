@@ -17,7 +17,7 @@ def GetDataFromAPI():
     tmpPath = 'tmp/'
     filePath = 'file/'
 
-    """ os.mkdir(tmpPath)
+    os.mkdir(tmpPath)
 
     c = cdsapi.Client()
     c.retrieve(
@@ -32,10 +32,10 @@ def GetDataFromAPI():
             'variable': 'all',
             'format': 'zip',
         },
-        tmpPath + 'download.zip') """
+        tmpPath + 'download.zip')
 
-    """ with zipfile.ZipFile(tmpPath + 'download.zip', 'r') as zip_ref:
-        zip_ref.extractall(tmpPath + filePath) """
+    with zipfile.ZipFile(tmpPath + 'download.zip', 'r') as zip_ref:
+        zip_ref.extractall(tmpPath + filePath)
     
     for filename in os.listdir(tmpPath + filePath):
         print('Downloaded file: {}'.format(filename))
