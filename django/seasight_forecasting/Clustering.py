@@ -15,18 +15,17 @@ from seasight_forecasting import global_vars
 def rgb_to_hex(rgb):
     return 'ff%02x%02x%02x' % (int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))
 
+def GetColorbar(norm, cmap):
+    fig = plt.figure(figsize=(1, 3), facecolor = "white")
+    ax = fig.add_axes([0.05, 0.02, 0.6, 0.96])
+    mpl.colorbar.ColorbarBase(ax, cmap=cmap, norm=norm, orientation='vertical')
+    plt.savefig(global_vars.image_destination_path + 'colorbar.png')
+
 def InitCmap(SST):
     norm = mpl.colors.Normalize(SST.min(), SST.max())
     cmap = cm.viridis_r
     smap = cm.ScalarMappable(norm=norm, cmap=cmap)
-    
-    
-    fig = plt.figure(figsize=(8, 3), facecolor = "white")
-    fig.patch.set_alpha(0.0) 
-    ax = fig.add_axes([0.05, 0.80, 0.9, 0.15])
-    ax.patch.set_alpha(0.0)
-    mpl.colorbar.ColorbarBase(ax, cmap=cmap, norm=norm, orientation='horizontal')
-    plt.savefig(global_vars.image_destination_path + 'colorbar.png')
+    GetColorbar(norm, cmap)
     return smap
 
 def GetClusters(n_clusters, data):

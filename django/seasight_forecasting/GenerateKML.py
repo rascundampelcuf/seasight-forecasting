@@ -18,9 +18,20 @@ def CreateKML(regions, path, withDate):
                 KML.name('Temperature regions'))
             )
         )
+    
+    fich_kml.Document.Folder.append(
+        KML.ScreenOverlay(
+            KML.name('Colorbar'),
+            KML.Icon(KML.href('http://localhost:8000/static/seasight_forecasting/img/colorbar.png')),
+            KML.overlayXY(x="0", y="0", xunits="fraction", yunits="fraction"),
+            KML.screenXY(x="0.02", y="0.02", xunits="fraction", yunits="fraction"),
+            KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
+            KML.size(x="0", y="0", xunits="pixels", yunits="pixels")
+        )
+    )
+
     if withDate:
-        regions = list(itertools.chain.from_iterable(regions))        
-    #print(regions)
+        regions = list(itertools.chain.from_iterable(regions))
     for region in regions:
         date_from = ''
         date_to = ''
