@@ -17,29 +17,31 @@ def app(request):
 def past(request):    
     min_date, max_date = GetDate()
     context = {'min_date': min_date, 'max_date': max_date}
-
-    region = request.POST.get('region')
-    dateFrom = request.POST.get('dateFrom')
-    check = request.POST.get('check')
-    dateTo = request.POST.get('dateTo')
-    alt = request.POST.get('altitude')
-    lat = request.POST.get('latitude')
-    lon = request.POST.get('longitude')
-    GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon)
+    if request.method == 'POST':    
+        region = request.POST.get('region')
+        dateFrom = request.POST.get('dateFrom')
+        check = request.POST.get('check')
+        dateTo = request.POST.get('dateTo')
+        alt = request.POST.get('altitude')
+        lat = request.POST.get('latitude')
+        lon = request.POST.get('longitude')
+        GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon)
     return render(request, 'seasight_forecasting/past.html', context)
 
 def present(request):
-    region = request.POST.get('region')
-    alt = request.POST.get('altitude')
-    lat = request.POST.get('latitude')
-    lon = request.POST.get('longitude')
-    GenerateRealTimeKML(region, alt, lat, lon)
+    if request.method == 'POST':
+        region = request.POST.get('region')
+        alt = request.POST.get('altitude')
+        lat = request.POST.get('latitude')
+        lon = request.POST.get('longitude')
+        GenerateRealTimeKML(region, alt, lat, lon)
     return render(request, 'seasight_forecasting/present.html', {})
 
 def future(request):
-    region = request.POST.get('region')
-    alt = request.POST.get('altitude')
-    lat = request.POST.get('latitude')
-    lon = request.POST.get('longitude')
-    GenerateFutureKML(region, alt, lat, lon)
+    if request.method == 'POST':
+        region = request.POST.get('region')
+        alt = request.POST.get('altitude')
+        lat = request.POST.get('latitude')
+        lon = request.POST.get('longitude')
+        GenerateFutureKML(region, alt, lat, lon)
     return render(request, 'seasight_forecasting/future.html', {})
