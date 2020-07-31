@@ -67,10 +67,10 @@ def GenerateRealTimeKML(region, alt, lat, lon):
     # alt, lat, lon = GetParameters()
     # left, right, up, down = GetBounds(alt, lat, lon)
     # data = GetDataFromBounds(data, left, right, up, down)
-    #try:
-    message = CreateSingleFrameKML(data)
-    #except Exception as e:
-        #message = "ERROR: {}".format(e)
+    try:
+        message = CreateSingleFrameKML(data)
+    except Exception as e:
+        message = "ERROR: {}".format(e)
     print(message)
 
 def GenerateFutureKML(region, alt, lat, lon):
