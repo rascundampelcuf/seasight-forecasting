@@ -38,15 +38,15 @@ def GetDataFromAPI():
         zip_ref.extractall(tmpPath + filePath)
     
     for filename in os.listdir(tmpPath + filePath):
-        print(filename)
-        ds = xr.open_dataset(tmpPath + filePath + '/' + filename)
-        df = (ds.to_dataframe()).dropna()
-        df = df.rename(columns={"analysed_sst": "sst"})
-        df = df.drop(['analysis_uncertainty', 'sea_ice_fraction', 'mask'], axis=1).reset_index()
-        df['sst'] = df['sst'].apply(lambda x: x - 273,15)
-        df['lat'] = df['lat'].apply(lambda x: round(x * 2) / 2)
-        df['lon'] = df['lon'].apply(lambda x: round(x * 2) / 2)
-        data = df.groupby(['time', 'lat', 'lon'])['sst'].mean().reset_index()
+        print('Downloaded file: {}'.format(filename))
+        with xr.open_dataset(tmpPath + filePath + '/' + filename) as ds:
+            df = (ds.to_dataframe()).dropna()
+            df = df.rename(columns={"analysed_sst": "sst"})
+            df = df.drop(['analysis_uncertainty', 'sea_ice_fraction', 'mask'], axis=1).reset_index()
+            df['sst'] = df['sst'].apply(lambda x: x - 273,15)
+            df['lat'] = df['lat'].apply(lambda x: round(x * 2) / 2)
+            df['lon'] = df['lon'].apply(lambda x: round(x * 2) / 2)
+            data = df.groupby(['time', 'lat', 'lon'])['sst'].mean().reset_index()
     
     shutil.rmtree(tmpPath, ignore_errors=True)
     print('Temporary files removed!')
