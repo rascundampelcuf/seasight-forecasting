@@ -15,17 +15,23 @@ from seasight_forecasting import global_vars
 def rgb_to_hex(rgb):
     return 'ff%02x%02x%02x' % (int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))
 
+def GetColor(color, cmap):
+    clr = mpl.colors.to_hex(cmap.to_rgba(color))
+    clr = '#ff' + clr[1:]
+    return clr
+
 def GetColorbar(norm, cmap):
+
     fig = plt.figure(figsize=(1, 3), facecolor = "white")
     ax = fig.add_axes([0.05, 0.02, 0.6, 0.96])
     mpl.colorbar.ColorbarBase(ax, cmap=cmap, norm=norm, orientation='vertical')
     plt.savefig(global_vars.image_destination_path + 'colorbar.png')
 
-def InitCmap(SST):
-    norm = mpl.colors.Normalize(SST.min(), SST.max())
-    cmap = cm.viridis_r
-    smap = cm.ScalarMappable(norm=norm, cmap=cmap)
+def InitCmap(min, max):
+    norm = mpl.colors.Normalize(min, max)
+    cmap = cm.get_cmap(global_vars.cmap)
     GetColorbar(norm, cmap)
+    smap = cm.ScalarMappable(norm=norm, cmap=cmap)
     return smap
 
 def GetClusters(n_clusters, data):
@@ -49,8 +55,8 @@ def GetRegions(n_clusters, data, cmap, date):
         region.sort(key=lambda p: math.atan2(p[1]-cent[1],p[0]-cent[0]))
         # Copied the first element in the last position in order to close the circle
         region.append(region[0])
-        # Convert the mean temperature value into RGB values into HEX value
-        region.append(rgb_to_hex(cmap.to_rgba(points['sst'].mean())))
+        # Convert the mean temperature value into a color
+        region.append(GetColor(points['sst'].mean(), cmap))
         if date:
             date_from = date
             date_to = date_from + datetime.timedelta(days=1)

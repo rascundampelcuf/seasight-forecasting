@@ -9,3 +9,4 @@ kml_destination = ''
 image_destination_path = ''
 
 number_of_clusters = 0
+cmap = ''

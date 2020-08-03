@@ -22,5 +22,6 @@ def LoadConfigFile():
     global_vars.image_destination_path = config['FILES']['image_destination_path']
 
     global_vars.number_of_clusters = int(config['KML']['number_of_clusters'])
+    global_vars.cmap = config['KML']['cmap']
     
     print('Global variables loaded!')

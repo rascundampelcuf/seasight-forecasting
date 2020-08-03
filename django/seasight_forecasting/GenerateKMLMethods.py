@@ -48,7 +48,7 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon):
             data = group[1]
             data = data.drop(['time'], axis=1)
             ngroup = GetClusters(global_vars.number_of_clusters, data)
-            regions.append(GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data['sst']), group[0].date()))
+            regions.append(GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data.sst.min(), data.sst.max()), group[0].date()))
         CreateKML(regions, global_vars.kml_destination, True)
         message = 'Created KML file in {}'.format(global_vars.kml_destination)
     except Exception as e:
