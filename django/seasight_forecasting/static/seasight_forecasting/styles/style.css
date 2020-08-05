@@ -70,3 +70,14 @@
 .textVal {
   color: red;
 }
+
+/* Logos */
+.content-logos {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.logo-elem {
+  width: 10%;
+}

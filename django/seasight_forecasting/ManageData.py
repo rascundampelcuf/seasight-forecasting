@@ -75,7 +75,4 @@ def GetDataInDateRange(data, dateFrom, check, dateTo):
     data = data[data.time > dateFrom]
     if check:
         data = data[data.time < str((datetime.datetime.strptime(dateTo, '%Y-%m-%d') + datetime.timedelta(days=1)))]
-    print(data)
-    print(dateFrom)
-    print(dateTo)
     return data

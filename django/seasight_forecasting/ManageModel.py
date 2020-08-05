@@ -37,7 +37,5 @@ def LRPrediction(data, model):
         a = np.array(row.sst).reshape(-1,1)
         pred = model.predict(a)
         nr = pd.DataFrame({'lat': row.lat, 'lon': row.lon, 'sst': pred})
-        print(nr)
         ndf = ndf.append(nr, ignore_index = True)
-    print(ndf)
     return ndf

@@ -11,16 +11,45 @@ def GetCoords(region):
         string += '{},{},20000\n'.format(p[0], p[1])
     return string
 
+def SetColorbar(kml):
+    kml.Document.Folder.append(
+        KML.ScreenOverlay(
+            KML.name('Colorbar'),
+            KML.Icon(KML.href('http://localhost:8000/static/seasight_forecasting/img/colorbar.png')),
+            KML.overlayXY(x="0", y="0", xunits="fraction", yunits="fraction"),
+            KML.screenXY(x="0.02", y="0.02", xunits="fraction", yunits="fraction"),
+            KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
+            KML.size(x="0", y="0", xunits="fraction", yunits="fraction")
+        )
+    )
+    return kml
+
+def SetLogo(kml):
+    kml.Document.Folder.append(
+        KML.ScreenOverlay(
+            KML.name('Logo'),
+            KML.Icon(KML.href('http://localhost:8000/static/seasight_forecasting/img/SEASIGHT_fit.png')),
+            KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
+            KML.screenXY(x="0.02", y="0.9", xunits="fraction", yunits="fraction"),
+            KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
+            KML.size(x="0.1", y="0.2", xunits="fraction", yunits="fraction")
+        )
+    )
+    return kml
+
 def CreateKML(regions, path, withDate):
-    fich_kml = KML.kml(
+    kml = KML.kml(
         KML.Document(
             KML.Folder(
                 KML.name('Temperature regions'))
             )
         )
+    
+    kml = SetLogo(kml)
+    kml = SetColorbar(kml)
+    
     if withDate:
-        regions = list(itertools.chain.from_iterable(regions))        
-    #print(regions)
+        regions = list(itertools.chain.from_iterable(regions))
     for region in regions:
         date_from = ''
         date_to = ''
@@ -30,7 +59,7 @@ def CreateKML(regions, path, withDate):
             date_to = dates[1]
         color = region.pop()
 
-        fich_kml.Document.Folder.append(
+        kml.Document.Folder.append(
             KML.Placemark(
                 KML.TimeSpan(
                     KML.begin(date_from),
@@ -54,6 +83,6 @@ def CreateKML(regions, path, withDate):
             )
     
     f = open(path, "w")
-    out = etree.tostring(fich_kml, pretty_print=True).decode("utf-8")
+    out = etree.tostring(kml, pretty_print=True).decode("utf-8")
     f.write(out)
     f.close()
