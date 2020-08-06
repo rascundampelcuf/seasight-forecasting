@@ -1,10 +1,6 @@
 
 import configparser
-from seasight_forecasting import global_vars
-
-def CheckConfigFile():
-    pass
-    
+from seasight_forecasting import global_vars    
 
 def LoadConfigFile():
     config = configparser.ConfigParser()

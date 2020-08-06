@@ -21,7 +21,6 @@ def GetColor(color, cmap):
     return clr
 
 def GetColorbar(norm, cmap):
-
     fig = plt.figure(figsize=(1, 3), facecolor = "white")
     ax = fig.add_axes([0.05, 0.02, 0.6, 0.96])
     mpl.colorbar.ColorbarBase(ax, cmap=cmap, norm=norm, orientation='vertical')
