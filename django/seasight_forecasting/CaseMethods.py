@@ -84,8 +84,7 @@ def GenerateFutureKML(region):
     print('DATA AFTER REGION FILTERING:')
     print(data)
 
-    model = LoadLRModel()
-    data = LRPrediction(data, model)
+    data = PredictedData(data)
     print('PREDICTED DATA:')
     print(data)
 
@@ -96,7 +95,7 @@ def GenerateFutureKML(region):
     #data.lon = pd.to_numeric(data.lon, downcast="float")
     #data.lat = pd.to_numeric(data.lat, downcast="float")
     #data = NewPrediction(data, model)
-    
+
     try:
         message = CreateSingleFrameKML(data)
     except Exception as e:
