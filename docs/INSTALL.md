@@ -20,12 +20,17 @@
    git clone https://github.com/LiquidGalaxyLAB/Seasight-Forecasting.git
    ```
 
-5. Go inside the newly created folder
+5. Move the API credentials file to HOME
+   ```
+   mv Seasight-Forecasting/.cdsapirc $HOME
+   ```
+
+6. Go inside the newly created folder
    ```
    cd Seasight-Forecasting
    ```
 
-6. Create virtualenv with python3
+7. Create virtualenv with python3
    ```
    virtualenv -p python3 <"VIRTUALENV FOLDER">
    ```
