@@ -10,7 +10,7 @@ __Welcome to Seasight Forecasting project__
 This project is developed in a context of a scolarship in the program Google Summer Of Code 2020 and is a web application based on Django that pretends to display on the Liquid Galaxy sea surface temperatures based on 3 use cases: display historic temperatures, display real time temperatures and display predicted temperatures.
 
 <p align="center"> 
- <img width="200" src="logo.png">
+ <img width="200" src="seasight_forecasting/static/seasight_forecasting/logos/SF-logo.png">
 </p>
 
 ## Source files
