@@ -1,5 +1,6 @@
 historic_file_path = ''
 prediction_model_path = ''
+prediction_model_weights = ''
 north_atlantic_region_path = ''
 south_atlantic_region_path = ''
 indian_region_path = ''

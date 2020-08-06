@@ -9,6 +9,7 @@ def LoadConfigFile():
     
     global_vars.historic_file_path = config['FILES']['historic_data_path'] + config['FILES']['historic_data_file']
     global_vars.prediction_model_path = config['FILES']['prediction_model_path'] + config['FILES']['prediction_model_file']
+    global_vars.prediction_model_weights = config['FILES']['prediction_model_path'] + config['FILES']['prediction_model_weights']
     global_vars.north_atlantic_region_path = config['FILES']['regions_path'] + config['FILES']['north_atlantic_region_file']
     global_vars.south_atlantic_region_path = config['FILES']['regions_path'] + config['FILES']['south_atlantic_region_file']
     global_vars.indian_region_path = config['FILES']['regions_path'] + config['FILES']['indian_region_file']
