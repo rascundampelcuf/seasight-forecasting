@@ -28,20 +28,20 @@ def CreateSingleFrameKML(data):
     CreateKML(regions, global_vars.kml_destination, False)
     return 'Created KML file in {}'.format(global_vars.kml_destination)
 
-def GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon):
+def GenerateHistoricKML(region, dateFrom, check, dateTo):
     data = LoadData(global_vars.historic_file_path)
     data = PrepareData(data)
     print('ORIGINAL DATA:')
     print(data)
+
     data = GetDataInDateRange(data, dateFrom, check, dateTo)
     print('DATA AFTER DATE FILTER:')
     print(data)
+
     data = GetDataFromRegion(data, region)
     print('DATA AFTER REGION FILTER:')
     print(data)
-    # alt, lat, lon = GetParameters()
-    #left, right, up, down = GetBounds(alt, lat, lon)
-    #data = GetDataFromBounds(data, left, right, up, down)
+
     try:
         regions = []
         for group in data.groupby(['time']):
@@ -55,34 +55,35 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo, alt, lat, lon):
         message = "ERROR: {}".format(e)
     print(message)
 
-def GenerateRealTimeKML(region, alt, lat, lon):    
+def GenerateRealTimeKML(region):    
     data = GetDataFromAPI()
     data = PrepareData(data)
     data = data.drop(['time'], axis=1)
     print('ORIGINAL DATA:')
     print(data)
+
     data = GetDataFromRegion(data, region)
     print('DATA AFTER REGION FILTERING:')
     print(data)
-    # alt, lat, lon = GetParameters()
-    # left, right, up, down = GetBounds(alt, lat, lon)
-    # data = GetDataFromBounds(data, left, right, up, down)
+
     try:
         message = CreateSingleFrameKML(data)
     except Exception as e:
         message = "ERROR: {}".format(e)
     print(message)
 
-def GenerateFutureKML(region, alt, lat, lon):
+def GenerateFutureKML(region):
     data = LoadData(global_vars.historic_file_path)
     data = data[data.time == data.time.tail(1)[data.time.tail(1).index.start]]
     data = PrepareData(data)
     data = data.drop(['time'], axis=1)    
     print('ORIGINAL DATA:')
     print(data)
+
     data = GetDataFromRegion(data, region)
     print('DATA AFTER REGION FILTERING:')
     print(data)
+
     model = LoadLRModel()
     data = LRPrediction(data, model)
     print('PREDICTED DATA:')
@@ -95,9 +96,7 @@ def GenerateFutureKML(region, alt, lat, lon):
     #data.lon = pd.to_numeric(data.lon, downcast="float")
     #data.lat = pd.to_numeric(data.lat, downcast="float")
     #data = NewPrediction(data, model)
-    # alt, lat, lon = GetParameters()
-    # left, right, up, down = GetBounds(alt, lat, lon)
-    # data = GetDataFromBounds(data, left, right, up, down)
+    
     try:
         message = CreateSingleFrameKML(data)
     except Exception as e:
