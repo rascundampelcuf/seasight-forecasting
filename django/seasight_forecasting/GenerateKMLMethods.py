@@ -24,7 +24,7 @@ def PrepareData(data):
 def CreateSingleFrameKML(data):
     print('Number of clusters: {}'.format(global_vars.number_of_clusters))
     data = GetClusters(global_vars.number_of_clusters, data)
-    regions = GetRegions(global_vars.number_of_clusters, data, InitCmap(data['sst']), False)
+    regions = GetRegions(global_vars.number_of_clusters, data, InitCmap(data.sst.min(), data.sst.max()), False)
     CreateKML(regions, global_vars.kml_destination, False)
     return 'Created KML file in {}'.format(global_vars.kml_destination)
 
@@ -79,6 +79,7 @@ def GenerateFutureKML(region, alt, lat, lon):
     data = PrepareData(data)
     data = data.drop(['time'], axis=1)    
     print('ORIGINAL DATA:')
+    print(data)
     data = GetDataFromRegion(data, region)
     print('DATA AFTER REGION FILTERING:')
     print(data)
