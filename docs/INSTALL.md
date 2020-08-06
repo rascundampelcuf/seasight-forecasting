@@ -2,7 +2,7 @@
 ## Common Steps
 1. Install packages
     ```
-    sudo apt install git python3-pip python3-tk
+    sudo apt install git python3-pip python3-tk libspatialindex-dev libhdf5-serial-dev netcdf-bin libnetcdf-dev
     ```
 
 2. Upgrade pip3
