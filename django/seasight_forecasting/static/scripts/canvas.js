@@ -5,7 +5,7 @@ function drawbackground(canvas, context, onload) {
             onload(context);
         };
 
-    imagePaper.src = "../static/seasight_forecasting/img/world_map.jpg";
+    imagePaper.src = "../static/img/world_map.jpg";
 }
 
 function drawlines(ctx) {
