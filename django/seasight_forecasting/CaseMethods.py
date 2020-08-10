@@ -1,8 +1,6 @@
 
 from seasight_forecasting import global_vars
-
 from seasight_forecasting.Clustering import *
-from seasight_forecasting.GetBounds import *
 from seasight_forecasting.GenerateKML import *
 from seasight_forecasting.ManageData import *
 from seasight_forecasting.ManageModel import *
@@ -87,14 +85,6 @@ def GenerateFutureKML(region):
     data = PredictedData(data)
     print('PREDICTED DATA:')
     print(data)
-
-    #model = LoadRNNModel()
-    #print(model)
-    #data = data.drop(['time'], axis=1)
-    #print(type(data.lon[0]))
-    #data.lon = pd.to_numeric(data.lon, downcast="float")
-    #data.lat = pd.to_numeric(data.lat, downcast="float")
-    #data = NewPrediction(data, model)
 
     try:
         message = CreateSingleFrameKML(data)

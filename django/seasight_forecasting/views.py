@@ -1,11 +1,7 @@
-import subprocess
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
+from seasight_forecasting import global_vars
 from seasight_forecasting.ConfigurationFile import *
 from seasight_forecasting.CaseMethods import *
-
-from seasight_forecasting import global_vars
 
 def index(request):
     LoadConfigFile()
