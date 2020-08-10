@@ -6,7 +6,7 @@ from tensorflow.keras.models import model_from_json
 
 from seasight_forecasting import global_vars
 
-def LoadRNNModel():
+def LoadJSONModel():
     json_file = open(global_vars.prediction_model_path, 'r')
     loaded_model_json = json_file.read()
     json_file.close()
@@ -15,7 +15,7 @@ def LoadRNNModel():
     loaded_model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
     return loaded_model
 
-def LoadLRModel():
+def LoadPKLModel():
     loaded_model = pickle.load(open(global_vars.prediction_model_path, 'rb'))
     return loaded_model
 
@@ -44,9 +44,9 @@ def LRPrediction(data, model):
 def PredictedData(data):
     file_format = global_vars.prediction_model_path.split('.')[-1]
     if (file_format == 'json'):
-        model = LoadRNNModel()
+        model = LoadJSONModel()
         data = RNNPrediction(data, model)
     elif (file_format == 'pkl'):
-        model = LoadLRModel()
+        model = LoadPKLModel()
         data = LRPrediction(data, model)
     return data
