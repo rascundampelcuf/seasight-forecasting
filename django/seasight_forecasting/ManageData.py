@@ -8,6 +8,7 @@ import geopandas as gpd
 import pandas as pd
 import xarray as xr
 from shapely.ops import cascaded_union
+from seasight_forecasting import global_vars
 
 def LoadData(data_path):    
     return pd.read_csv(data_path)
@@ -55,11 +56,11 @@ def GetDataFromAPI():
 
 def GetDataFromRegion(data, region):
     regions = {
-        "North Atlantic Ocean": '../data/regions/north_atlantic.geojson',
-        "South Atlantic Ocean": '../data/regions/south_atlantic.geojson',
-        "Indian Ocean": '../data/regions/indian.geojson',
-        "West Pacific Ocean": '../data/regions/west_pacific.geojson',
-        "East Pacific Ocean": '../data/regions/east_pacific.geojson',
+        "North Atlantic Ocean": global_vars.north_atlantic_region_path,
+        "South Atlantic Ocean": global_vars.south_atlantic_region_path,
+        "Indian Ocean": global_vars.indian_region_path,
+        "West Pacific Ocean": global_vars.west_pacific_region_path,
+        "East Pacific Ocean": global_vars.east_pacific_region_path,
     }
     regionFile = gpd.read_file(regions[region])
     pol = cascaded_union(regionFile['geometry'])
