@@ -10,7 +10,7 @@ __Welcome to Seasight Forecasting project__
 This project is developed in a context of a scolarship in the program Google Summer Of Code 2020 and is a web application based on Django that pretends to display on the Liquid Galaxy sea surface temperatures based on 3 use cases: display historic temperatures, display real time temperatures and display predicted temperatures.
 
 <p align="center"> 
- <img width="200" src="django/seasight_forecasting/static/seasight_forecasting/logos/SF-logo.png">
+ <img width="200" src="django/seasight_forecasting/static/logos/SF-logo.png">
 </p>
 
 ## Source files
@@ -74,9 +74,9 @@ south_atlantic_region_file = south_atlantic.geojson
 indian_region_file = indian.geojson
 west_pacific_region_file = west_pacific.geojson
 east_pacific_region_file = east_pacific.geojson
-kml_destination_path = seasight_forecasting/static/seasight_forecasting/kml/
+kml_destination_path = seasight_forecasting/static/kml/
 kml_destination_file = SST_regions.kml
-image_destination_path = seasight_forecasting/static/seasight_forecasting/img/
+image_destination_path = seasight_forecasting/static/img/
 
 [KML]
 number_of_clusters = 400

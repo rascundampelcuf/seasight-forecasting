@@ -1,17 +1,17 @@
 {% load static %}
 <!DOCTYPE html> 
 <html>
-    <link rel="stylesheet" type="text/css" href="{% static 'seasight_forecasting/styles/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <head>
         <title>Seasight Forecasting App</title>
     </head>
     <body>
-        <img src="{% static 'seasight_forecasting/logos/SF-logo.png' %}" class="logo">
+        <img src="{% static 'logos/SF-logo.png' %}" class="logo">
         <div class="container">
             <div>
-                <img src="{% static 'seasight_forecasting/img/marine_temp_vintage.jpg' %}" class="case_img">
+                <img src="{% static 'img/marine_temp_vintage.jpg' %}" class="case_img">
                 <center>
                     <form action="past">
                         <input type="submit" value="Historic" class="button" />
@@ -19,7 +19,7 @@
                 </center>
             </div>
             <div>
-                <img src="{% static 'seasight_forecasting/img/marine_temp.jpg' %}" class="case_img">
+                <img src="{% static 'img/marine_temp.jpg' %}" class="case_img">
                 <center>
                     <form action="present">
                         <input type="submit" value="Real time" class="button" />
@@ -27,7 +27,7 @@
                 </center>
             </div>
             <div>
-                <img src="{% static 'seasight_forecasting/img/marine_temp_futuristic.jpg' %}" class="case_img">
+                <img src="{% static 'img/marine_temp_futuristic.jpg' %}" class="case_img">
                 <center>
                     <form action="future">
                         <input type="submit" value="Future" class="button" />
@@ -37,15 +37,15 @@
         </div>
         <div class="content-logos">
             <div class="logos-line-1">
-                <img src="{% static 'seasight_forecasting/logos/LG-logo.png' %}" class="logo-elem">
+                <img src="{% static 'logos/LG-logo.png' %}" class="logo-elem">
             </div>
             <div class="logos-line-2">
-                <img src="{% static 'seasight_forecasting/logos/LGlab-logo.png' %}" class="logo-elem">
-                <img src="{% static 'seasight_forecasting/logos/labTIC-logo.png' %}" class="logo-elem">
-                <img src="{% static 'seasight_forecasting/logos/PCITAL-logo.jpg' %}" class="logo-elem">
-                <img src="{% static 'seasight_forecasting/logos/GSOC-logo.png' %}" class="logo-elem">
-                <img src="{% static 'seasight_forecasting/logos/LGEU-logo.png' %}" class="logo-elem">
-                <img src="{% static 'seasight_forecasting/logos/UOC-logo.png' %}" class="logo-elem">
+                <img src="{% static 'logos/LGlab-logo.png' %}" class="logo-elem">
+                <img src="{% static 'logos/labTIC-logo.png' %}" class="logo-elem">
+                <img src="{% static 'logos/PCITAL-logo.jpg' %}" class="logo-elem">
+                <img src="{% static 'logos/GSOC-logo.png' %}" class="logo-elem">
+                <img src="{% static 'logos/LGEU-logo.png' %}" class="logo-elem">
+                <img src="{% static 'logos/UOC-logo.png' %}" class="logo-elem">
             </div>
         </div>
     </body>

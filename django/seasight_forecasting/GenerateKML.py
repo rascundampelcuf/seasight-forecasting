@@ -15,7 +15,7 @@ def SetColorbar(kml):
     kml.Document.Folder.append(
         KML.ScreenOverlay(
             KML.name('Colorbar'),
-            KML.Icon(KML.href('http://localhost:8000/static/seasight_forecasting/img/colorbar.png')),
+            KML.Icon(KML.href('http://localhost:8000/static/img/colorbar.png')),
             KML.overlayXY(x="0", y="0", xunits="fraction", yunits="fraction"),
             KML.screenXY(x="0.02", y="0.02", xunits="fraction", yunits="fraction"),
             KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
@@ -28,7 +28,7 @@ def SetLogo(kml):
     kml.Document.Folder.append(
         KML.ScreenOverlay(
             KML.name('Logo'),
-            KML.Icon(KML.href('http://localhost:8000/static/seasight_forecasting/img/SEASIGHT_fit.png')),
+            KML.Icon(KML.href('http://localhost:8000/static/img/SEASIGHT_fit.png')),
             KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
             KML.screenXY(x="0.02", y="0.9", xunits="fraction", yunits="fraction"),
             KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
