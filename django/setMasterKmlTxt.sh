@@ -1,10 +1,4 @@
 $ip = ifconfig eth0 | grep 'inet addr' | cut -d: -f2 | awk '{print $1}'
+$file = '/var/www/html/kmls.txt'
 
-ssh $1 << EOF
-    vi /var/www/html/kmls.txt
-    i
-    http://$ip:81/static/kml/SST_regions.kml
-    ^[
-    ZZ
-    x23LimitStringx23
-EOF
+ssh $1 "sed 'http://$ip:81/static/kml/SST_regions.kml' $file"
