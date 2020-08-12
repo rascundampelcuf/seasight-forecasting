@@ -72,7 +72,7 @@ def GenerateRealTimeKML(region):
 
 def GenerateFutureKML(region):
     data = LoadData(global_vars.historic_file_path)
-    data = data[data.time == data.time.tail(1)[data.time.tail(1).index.start]]
+    data = data[data.time == data.time.tail(1)[data.time.tail(1).index._start]]
     data = PrepareData(data)
     data = data.drop(['time'], axis=1)    
     print('ORIGINAL DATA:')
