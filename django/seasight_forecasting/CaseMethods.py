@@ -16,7 +16,7 @@ def PrepareData(data):
     data.time = pd.to_datetime(data.time, errors='coerce', format='%Y-%m-%d %H:%M:%S')
     data.lon = pd.to_numeric(data.lon, errors='coerce').fillna(0).astype(float)
     data.lat = pd.to_numeric(data.lat, errors='coerce').fillna(0).astype(float)
-    data.sst = pd.to_numeric(data.sst, errors='coerce').fillna(0).astype(float)
+    data.sst = round(pd.to_numeric(data.sst, errors='coerce').fillna(0).astype(float), 1)
     return data
 
 def CreateSingleFrameKML(data):
