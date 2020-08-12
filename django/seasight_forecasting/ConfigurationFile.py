@@ -15,10 +15,16 @@ def LoadConfigFile():
     global_vars.indian_region_path = config['FILES']['regions_path'] + config['FILES']['indian_region_file']
     global_vars.west_pacific_region_path = config['FILES']['regions_path'] + config['FILES']['west_pacific_region_file']
     global_vars.east_pacific_region_path = config['FILES']['regions_path'] + config['FILES']['east_pacific_region_file']
-    global_vars.kml_destination = config['FILES']['kml_destination_path'] + config['FILES']['kml_destination_file']
+    global_vars.kml_destination_path = config['FILES']['kml_destination_path']
+    global_vars.kml_destination_filename = config['FILES']['kml_destination_file']
     global_vars.image_destination_path = config['FILES']['image_destination_path']
 
     global_vars.number_of_clusters = int(config['KML']['number_of_clusters'])
     global_vars.cmap = config['KML']['cmap']
+
+    global_vars.server_IP = config['INSTALLATION']['server_IP']
+    global_vars.master_IP = config['INSTALLATION']['master_IP']
+    global_vars.screen_for_logos = int(config['INSTALLATION']['screen_for_logos'])
+    global_vars.screen_for_colorbar = int(config['INSTALLATION']['screen_for_colorbar'])
     
     print('Global variables loaded!')
