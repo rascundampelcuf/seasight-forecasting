@@ -41,28 +41,38 @@
    source <"VIRTUALENV FOLDER">/bin/activate
    ```
 
-2. Install requirements
+2. Change to Django folder
    ```
-   pip3 install -r django/requirements.txt
+   cd django
+   ```
+
+3. Install requirements
+   ```
+   pip3 install -r requirements.txt
    ```
 
 3. Apply migrations
    ```
-   python django/manage.py migrate
+   python manage.py migrate
    ```
 
 ## For LG master
-1. Add in /var/www/html/kmls.txt the following line:
-    ```
-    http://<SERVER-IP>:81/Seasight-Forecasting/data/SST_regions.kml
-    ```
+1. Modify app.conf file adding the Server's IP and the Master's IP
+
+2. Add permissions to the script file that we will use to send files to master
+   ```
+   chmod +x setMasterKmlTxt.sh
+   ```
+
+3. Run the script
+   ```
+   ./setMasterKmlTxt.sh
+   ```
 
 ## RUN
-1. Go inside Django folder. After this command ensure you are inside Seasight-Forecasting/django
-   ```
-   cd django
-   ```
-2. Run the application with:
+1. Ensure you are inside Seasight-Forecasting/django
+
+2. Run the application
     ```
     python manage.py runserver
     ```
