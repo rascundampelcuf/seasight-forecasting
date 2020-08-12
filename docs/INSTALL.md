@@ -7,7 +7,7 @@
 
 2. Upgrade pip3
     ```
-    sudo pip3 install --upgrade pip
+    pip3 install --upgrade --user pip
     ```
 
 3. Install virtualenv
@@ -58,7 +58,11 @@
     ```
 
 ## RUN
-1. Run the application with:
+1. Go inside Django folder. After this command ensure you are inside Seasight-Forecasting/django
+   ```
+   cd django
+   ```
+2. Run the application with:
     ```
-    python django/manage.py runserver
+    python manage.py runserver
     ```
