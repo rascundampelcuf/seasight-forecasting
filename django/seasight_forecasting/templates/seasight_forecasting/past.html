@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -10,7 +10,7 @@
             $('#enableDateTo').change(function() {
                 $("#dateTo").attr("disabled", true);
                 if (this.checked) {
-                    $("#dateTo").removeAttr("disabled");                    
+                    $("#dateTo").removeAttr("disabled");
                 }
             });
         });
@@ -33,7 +33,7 @@
                     <img src="{% static 'img/marine_temp_vintage.jpg' %}" class="header_img">
                 </div>
             </div>
-        </div>            
+        </div>
 
         <h1>Historic visualization</h1>
         {{ response }}
@@ -41,9 +41,9 @@
             <div>
                 {% include "./canvas.html" %}
             </div>
-            <div>                
-                <form action="{% url 'past' %}" method="POST" name="GenerateKML" onsubmit="return validatePastForm()">
-                    {% csrf_token %}                    
+            <div>
+                <form action="{% url 'past' %}" method="POST" name="GenerateKML">
+                    {% csrf_token %}
                     <div>
                         <span>Region: </span>
                         <input type="text" id="region" name="region" value="--" readonly="readonly">
@@ -60,12 +60,8 @@
                         <input type="date" id="dateTo" name="dateTo" min="{{min_date}}" max="{{max_date}}" disabled>
                         <span id="dateToVal" class="textVal"></span>
                     </div>
-                    <input type="submit">
-                </form>
-            </div>
-            <div>
-                <form action="{% url 'stop_thread' %}" method="POST" name="StopThread">
-                    <input type="submit" value="Stop">
+                    <input type="submit" value="Submit" name="Submit" onclick="return validatePastForm();">
+                    <input type="submit" value="Stop" name="Stop">
                 </form>
             </div>
         </div>

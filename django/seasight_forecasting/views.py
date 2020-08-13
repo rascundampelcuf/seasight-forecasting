@@ -10,23 +10,31 @@ def index(request):
     LoadConfigFile()
     return render(request, 'seasight_forecasting/index.html', {})
 
+def run_historic():
+    region = request.POST.get('region')
+    dateFrom = request.POST.get('dateFrom')
+    check = request.POST.get('check')
+    dateTo = request.POST.get('dateTo')
+    GenerateHistoricKML(region, dateFrom, check, dateTo)
+    startSendKMLThread()
+
+def stop_thread():
+    stopSendKMLThread()
+
 def past(request):
     LoadConfigFile()
     min_date, max_date = GetDate()
     context = {'min_date': min_date, 'max_date': max_date}
+
     if request.method == 'POST':
-        region = request.POST.get('region')
-        dateFrom = request.POST.get('dateFrom')
-        check = request.POST.get('check')
-        dateTo = request.POST.get('dateTo')
-        GenerateHistoricKML(region, dateFrom, check, dateTo)
-        startSendKMLThread()
+        if request.POST.get("Submit") == "Submit":
+            run_historic()
+        if request.POST.get("Stop") == "Stop":
+            stop_thread()
+
     return render(request, 'seasight_forecasting/past.html', context)
 
-def stop_thread(request):
-    if request.method == 'POST':
-        stopSendKMLThread()
-    return render(request, 'seasight_forecasting/past.html', {})
+
 
 def present(request):
     LoadConfigFile()
