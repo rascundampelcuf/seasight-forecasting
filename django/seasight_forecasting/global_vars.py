@@ -15,5 +15,7 @@ cmap = ''
 
 server_IP = 0
 master_IP = 0
+master_pass = ''
 screen_for_logos = 3
 screen_for_colorbar = 2
+project_location = ''
