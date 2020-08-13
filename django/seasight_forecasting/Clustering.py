@@ -12,9 +12,6 @@ from sklearn.cluster import AgglomerativeClustering
 from seasight_forecasting import global_vars
 
 
-def rgb_to_hex(rgb):
-    return 'ff%02x%02x%02x' % (int(rgb[0]*255), int(rgb[1]*255), int(rgb[2]*255))
-
 def GetColor(color, cmap):
     clr = mpl.colors.to_hex(cmap.to_rgba(color))
     clr = '#ff' + clr[1:]
