@@ -52,6 +52,19 @@ def CreateLogosKML():
     f.write(out)
     f.close()
 
+def SetDateInKML(kml, date):
+    kml.Document.Folder.append(
+        KML.ScreenOverlay(
+            KML.name('Date'),
+            KML.Icon(KML.href('![CDATA[http://chart.apis.google.com/chart?chst=d_text_outline&chld=FFBBBB|16|h|BB0000|b|{}]]'.format(date))),
+            KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
+            KML.screenXY(x="0.02", y="0.9", xunits="fraction", yunits="fraction"),
+            KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
+            KML.size(x="0.5", y="0.5", xunits="fraction", yunits="fraction")
+        )
+    )
+    return kml
+
 def CreateRegionsKML(regions, withDate):
     kml = KML.kml(
         KML.Document(
@@ -59,24 +72,20 @@ def CreateRegionsKML(regions, withDate):
                 KML.name('Temperature regions'))
             )
         )
-    
+
+    filename = global_vars.kml_destination_filename
+
     if withDate:
         regions = list(itertools.chain.from_iterable(regions))
+        date = regions.pop()
+        SetDateInKML(kml, date)
+        filename = 'historic_' + str(date) + '.kml'
+
     for region in regions:
-        date_from = ''
-        date_to = ''
-        if withDate:
-            dates = region.pop()
-            date_from = dates[0]
-            date_to = dates[1]
         color = region.pop()
 
         kml.Document.Folder.append(
             KML.Placemark(
-                KML.TimeSpan(
-                    KML.begin(date_from),
-                    KML.end(date_to)
-                ),
                 KML.Style(
                 KML.PolyStyle(
                     KML.color(color),
@@ -93,8 +102,8 @@ def CreateRegionsKML(regions, withDate):
                     )
                 )
             )
-    
-    f = open(global_vars.kml_destination_path + global_vars.kml_destination_filename, "w")
+
+    f = open(global_vars.kml_destination_path + filename, "w")
     out = etree.tostring(kml, pretty_print=True).decode("utf-8")
     f.write(out)
     f.close()

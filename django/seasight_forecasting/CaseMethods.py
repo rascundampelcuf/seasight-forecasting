@@ -52,8 +52,8 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo):
             data = data.drop(['time'], axis=1)
             ngroup = GetClusters(global_vars.number_of_clusters, data)
             regions.append(GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data.sst.min(), data.sst.max()), group[0].date()))
+            CreateKML(regions, True)
         print('Clustering DONE!')
-        CreateKML(regions, True)
         message = 'Created KML files in {}'.format(global_vars.kml_destination_path)
     except Exception as e:
         message = "ERROR: {}".format(e)
