@@ -9,7 +9,7 @@ from seasight_forecasting import global_vars
 def GetCoords(region):
     string = ''
     for p in region:
-        string += '{},{},20000\n'.format(p[0], p[1])
+        string += '{},{},40000\n'.format(p[0], p[1])
     return string
 
 def CreateColorbarKML():
