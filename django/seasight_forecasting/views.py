@@ -14,21 +14,26 @@ def past(request):
     LoadConfigFile()
     min_date, max_date = GetDate()
     context = {'min_date': min_date, 'max_date': max_date}
-    if request.method == 'POST':    
+    if request.method == 'POST':
         region = request.POST.get('region')
         dateFrom = request.POST.get('dateFrom')
         check = request.POST.get('check')
         dateTo = request.POST.get('dateTo')
         GenerateHistoricKML(region, dateFrom, check, dateTo)
-        sendKmlToLG()
+        startSendKMLThread()
     return render(request, 'seasight_forecasting/past.html', context)
+
+def stop_thread(request):
+    if request.method == 'POST':
+        stopSendKMLThread()
+    return render(request, 'seasight_forecasting/past.html', {})
 
 def present(request):
     LoadConfigFile()
     if request.method == 'POST':
         region = request.POST.get('region')
         GenerateRealTimeKML(region)
-        sendKmlToLG()
+        sendKmlToLG(global_vars.kml_destination_filename)
     return render(request, 'seasight_forecasting/present.html', {})
 
 def future(request):
@@ -36,7 +41,7 @@ def future(request):
     if request.method == 'POST':
         region = request.POST.get('region')
         GenerateFutureKML(region)
-        sendKmlToLG()
+        sendKmlToLG(global_vars.kml_destination_filename)
     return render(request, 'seasight_forecasting/future.html', {})
 
 def demo(request):

@@ -54,10 +54,8 @@ def GetRegions(n_clusters, data, cmap, date):
         region.append(region[0])
         # Convert the mean temperature value into a color
         region.append(GetColor(points['sst'].mean(), cmap))
-        if date:
-            date_from = date
-            date_to = date_from + datetime.timedelta(days=1)
-            region.append([str(date_from), str(date_to)])
         regions.append(region)
+    if date:
+        regions.append(str(date))
     return regions
 
