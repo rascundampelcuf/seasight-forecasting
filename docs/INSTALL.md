@@ -51,7 +51,12 @@
    pip3 install -r requirements.txt
    ```
 
-3. Apply migrations
+4. Add server as allowed host adding Server's IP inside ALLOWED_HOSTS in Seasight-Forecasting/djang/mysite/settings.py as the following:
+   ```
+   ALLOWED_HOSTS = ['XXX.XXX.XXX.XXX']
+   ```
+
+5. Apply migrations
    ```
    python manage.py migrate
    ```
