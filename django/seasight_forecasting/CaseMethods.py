@@ -21,32 +21,37 @@ def PrepareData(data):
 
 def CreateSingleFrameKML(data):
     print('Number of clusters: {}'.format(global_vars.number_of_clusters))
+    print('Start Clustering...')
     data = GetClusters(global_vars.number_of_clusters, data)
     regions = GetRegions(global_vars.number_of_clusters, data, InitCmap(data.sst.min(), data.sst.max()), False)
+    print('Clustering DONE!')
     CreateKML(regions, False)
     return 'Created KML files in {}'.format(global_vars.kml_destination_path)
 
 def GenerateHistoricKML(region, dateFrom, check, dateTo):
     data = LoadData(global_vars.historic_file_path)
     data = PrepareData(data)
-    print('ORIGINAL DATA:')
     print(data)
+    print('ORIGINAL DATA')
 
     data = GetDataInDateRange(data, dateFrom, check, dateTo)
-    print('DATA AFTER DATE FILTER:')
     print(data)
+    print('DATA AFTER DATE FILTER')
 
     data = GetDataFromRegion(data, region)
-    print('DATA AFTER REGION FILTER:')
     print(data)
+    print('DATA AFTER REGION FILTER')
 
     try:
         regions = []
+        print('Number of clusters: {}'.format(global_vars.number_of_clusters))
+        print('Start Clustering...')
         for group in data.groupby(['time']):
             data = group[1]
             data = data.drop(['time'], axis=1)
             ngroup = GetClusters(global_vars.number_of_clusters, data)
             regions.append(GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data.sst.min(), data.sst.max()), group[0].date()))
+        print('Clustering DONE!')
         CreateKML(regions, True)
         message = 'Created KML files in {}'.format(global_vars.kml_destination_path)
     except Exception as e:
@@ -57,12 +62,12 @@ def GenerateRealTimeKML(region):
     data = GetDataFromAPI()
     data = PrepareData(data)
     data = data.drop(['time'], axis=1)
-    print('ORIGINAL DATA:')
     print(data)
+    print('ORIGINAL DATA')
 
     data = GetDataFromRegion(data, region)
-    print('DATA AFTER REGION FILTERING:')
     print(data)
+    print('DATA AFTER REGION FILTERING')
 
     try:
         message = CreateSingleFrameKML(data)
@@ -75,16 +80,18 @@ def GenerateFutureKML(region):
     data = data[data.time == data.time.tail(1)[data.time.tail(1).index._start]]
     data = PrepareData(data)
     data = data.drop(['time'], axis=1)    
-    print('ORIGINAL DATA:')
     print(data)
+    print('ORIGINAL DATA')
 
     data = GetDataFromRegion(data, region)
-    print('DATA AFTER REGION FILTERING:')
     print(data)
+    print('DATA AFTER REGION FILTERING')
 
+    print('Start Prediction...')
     data = PredictedData(data)
-    print('PREDICTED DATA:')
     print(data)
+    print('PREDICTED DATA')
+    print('Prediction DONE!')
 
     try:
         message = CreateSingleFrameKML(data)
