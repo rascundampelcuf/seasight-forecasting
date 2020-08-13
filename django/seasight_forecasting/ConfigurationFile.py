@@ -21,6 +21,7 @@ def LoadConfigFile():
 
     global_vars.number_of_clusters = int(config['KML']['number_of_clusters'])
     global_vars.cmap = config['KML']['cmap']
+    global_vars.sleep_in_thread = config['KML']['sleep_in_thread']
 
     global_vars.server_IP = config['INSTALLATION']['server_IP']
     global_vars.master_IP = config['INSTALLATION']['master_IP']
