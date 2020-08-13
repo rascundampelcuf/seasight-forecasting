@@ -1,5 +1,8 @@
+
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from seasight_forecasting import global_vars
+from seasight_forecasting.utils import *
 from seasight_forecasting.ConfigurationFile import *
 from seasight_forecasting.CaseMethods import *
 
@@ -17,6 +20,7 @@ def past(request):
         check = request.POST.get('check')
         dateTo = request.POST.get('dateTo')
         GenerateHistoricKML(region, dateFrom, check, dateTo)
+        sendKmlToLG()
     return render(request, 'seasight_forecasting/past.html', context)
 
 def present(request):
@@ -24,6 +28,7 @@ def present(request):
     if request.method == 'POST':
         region = request.POST.get('region')
         GenerateRealTimeKML(region)
+        sendKmlToLG()
     return render(request, 'seasight_forecasting/present.html', {})
 
 def future(request):
@@ -31,4 +36,11 @@ def future(request):
     if request.method == 'POST':
         region = request.POST.get('region')
         GenerateFutureKML(region)
+        sendKmlToLG()
     return render(request, 'seasight_forecasting/future.html', {})
+
+def demo(request):
+    LoadConfigFile()
+    #if request.method == 'POST':
+        #GenerateDemo()
+    return HttpResponseRedirect("/")
