@@ -3,12 +3,17 @@ import itertools
 import os
 from seasight_forecasting import global_vars
 from threading import Thread
-from time import sleep
+from time import sleep, time
 
 def sendKmlToLG(filename):
-    command = "sshpass -p " + global_vars.master_pass +" scp $HOME/" + global_vars.project_location \
+    command = "sshpass -p " + global_vars.master_pass + " scp $HOME/" + global_vars.project_location \
         + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + filename \
         + " " + global_vars.master_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
+    print(command)
+    os.system(command)
+    command = "sshpass -p " + global_vars.master_pass + " ssh " + global_vars.master_IP \
+        + " echo http://localhost:81/SF/" + global_vars.kml_destination_filename + "?id=" + int(time()*100) \
+        + " > /var/www/html/kmls.txt"
     print(command)
     os.system(command)
 
