@@ -51,7 +51,7 @@
    pip3 install -r requirements.txt
    ```
 
-4. Add server as allowed host adding Server's IP inside ALLOWED_HOSTS in Seasight-Forecasting/djang/mysite/settings.py as the following:
+4. Add server as allowed host adding Server's IP inside `ALLOWED_HOSTS` in `Seasight-Forecasting/djang/mysite/settings.py` as the following:
    ```
    ALLOWED_HOSTS = ['XXX.XXX.XXX.XXX']
    ```
@@ -62,7 +62,7 @@
    ```
 
 ## For LG master
-1. Modify app.conf file adding the Server's IP and the Master's IP
+1. Modify `app.conf` file adding the Server's IP and the Master's IP
 
 2. Add permissions to the script file that we will use to send files to master
    ```
