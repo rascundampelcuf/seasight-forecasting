@@ -10,7 +10,7 @@ screen_for_colorbar=${screen_for_colorbar// /}
 kml_filename=$(awk -F "=" '/kml_destination_file/ {print $2}' app.conf)
 kml_filename=${kml_filename// /}
 
-kml_file_source='http://'$master_ip':81/'$kml_filename
+kml_file_source='http://'$master_ip':81/SF/'$kml_filename
 
 kml_file_target='/var/www/html/kmls.txt'
 logos_file_target='/var/www/html/kml/slave_'$screen_for_logos'.kml'
