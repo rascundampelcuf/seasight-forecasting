@@ -34,6 +34,7 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo):
     print(data)
     print('ORIGINAL DATA')
 
+    print('Start date and region filtering...')
     data = GetDataInDateRange(data, dateFrom, check, dateTo)
     print(data)
     print('DATA AFTER DATE FILTER')
@@ -65,6 +66,7 @@ def GenerateRealTimeKML(region):
     print(data)
     print('ORIGINAL DATA')
 
+    print('Start region filtering...')
     data = GetDataFromRegion(data, region)
     print(data)
     print('DATA AFTER REGION FILTERING')
@@ -83,6 +85,7 @@ def GenerateFutureKML(region):
     print(data)
     print('ORIGINAL DATA')
 
+    print('Start region filtering...')
     data = GetDataFromRegion(data, region)
     print(data)
     print('DATA AFTER REGION FILTERING')
