@@ -67,7 +67,7 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo):
         message = "ERROR: {}".format(e)
     print(message)
 
-def GenerateRealTimeKML(region):    
+def GenerateRealTimeKML(region):
     data = GetDataFromAPI()
     data = PrepareData(data)
     data = data.drop(['time'], axis=1)
@@ -89,7 +89,7 @@ def GenerateFutureKML(region):
     data = LoadData(global_vars.historic_file_path)
     data = data[data.time == data.time.tail(1)[data.time.tail(1).index._start]]
     data = PrepareData(data)
-    data = data.drop(['time'], axis=1)    
+    data = data.drop(['time'], axis=1)
     print(data)
     print('ORIGINAL DATA')
 

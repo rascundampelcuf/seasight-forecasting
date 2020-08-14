@@ -1,12 +1,12 @@
 
 import configparser
-from seasight_forecasting import global_vars    
+from seasight_forecasting import global_vars
 
 def LoadConfigFile():
     config = configparser.ConfigParser()
     configFilePath = r'app.conf'
     config.read(configFilePath)
-    
+
     global_vars.historic_file_path = config['FILES']['historic_data_path'] + config['FILES']['historic_data_file']
     global_vars.prediction_model_path = config['FILES']['prediction_model_path'] + config['FILES']['prediction_model_file']
     global_vars.prediction_model_weights = config['FILES']['prediction_model_path'] + config['FILES']['prediction_model_weights']
@@ -21,7 +21,7 @@ def LoadConfigFile():
 
     global_vars.number_of_clusters = int(config['KML']['number_of_clusters'])
     global_vars.cmap = config['KML']['cmap']
-    global_vars.sleep_in_thread = config['KML']['sleep_in_thread']
+    global_vars.sleep_in_thread = int(config['KML']['sleep_in_thread'])
 
     global_vars.server_IP = config['INSTALLATION']['server_IP']
     global_vars.master_IP = config['INSTALLATION']['master_IP']

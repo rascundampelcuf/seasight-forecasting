@@ -33,14 +33,14 @@ def InitCmap(min, max):
 
 def GetClusters(n_clusters, data):
     cluster = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
-    cluster.fit_predict(data)    
+    cluster.fit_predict(data)
     data['labels'] = cluster.labels_
     return data
 
 def GetRegions(n_clusters, data, cmap, date):
     regions = []
     for cluster in range(n_clusters):
-        points = data[data.labels == cluster]    
+        points = data[data.labels == cluster]
         point_cloud = points[['lon', 'lat']].to_numpy()
         hull = ConvexHull(point_cloud)
         # Get first point from ConvexHull lines in order to create a polygon
