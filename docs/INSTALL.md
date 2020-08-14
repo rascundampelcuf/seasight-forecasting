@@ -64,7 +64,7 @@
 ## RUN
 1. Modify `app.conf` file adding the Server's IP and the Master's IP
 
-2. Ensure you are inside Seasight-Forecasting/django
+2. Ensure you are inside `Seasight-Forecasting/django`
 
 3. Run the application
     ```
