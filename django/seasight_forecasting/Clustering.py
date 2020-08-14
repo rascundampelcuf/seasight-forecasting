@@ -18,9 +18,9 @@ def GetColor(color, cmap):
     return clr
 
 def GetColorbar(norm, cmap):
-    fig = plt.figure(figsize=(1, 3), facecolor = "white")
-    ax = fig.add_axes([0.05, 0.02, 0.5, 0.96])
-    ax.set_xlabel('Temperature (°C)')
+    fig = plt.figure(figsize=(1.2, 4), facecolor = "white")
+    ax = fig.add_axes([0.2, 0.07, 0.4, 0.9])
+    ax.set_xlabel('Temp (°C)')
     mpl.colorbar.ColorbarBase(ax, cmap=cmap, norm=norm, orientation='vertical')
     plt.savefig(global_vars.image_destination_path + 'colorbar.png')
 
