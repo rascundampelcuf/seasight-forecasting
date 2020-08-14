@@ -16,7 +16,7 @@ def run_historic(request):
     check = request.POST.get('check')
     dateTo = request.POST.get('dateTo')
     GenerateHistoricKML(region, dateFrom, check, dateTo)
-    # startSendKMLThread()
+    startSendKMLThread()
 
 def stop_thread():
     stopSendKMLThread()
