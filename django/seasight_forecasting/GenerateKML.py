@@ -12,7 +12,7 @@ def GetCoords(region):
         string += '{},{},40000\n'.format(p[0], p[1])
     return string
 
-def CreateColorbarKML():
+def CreateDateAndColorbarKML():
     kml = KML.kml(
         KML.Document(
             KML.Folder(
@@ -23,6 +23,14 @@ def CreateColorbarKML():
                     KML.screenXY(x="0.02", y="0.02", xunits="fraction", yunits="fraction"),
                     KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
                     KML.size(x="0", y="0", xunits="fraction", yunits="fraction")
+                ),
+                KML.ScreenOverlay(
+                    KML.name('Date'),
+                    KML.Icon(KML.href('http://chart.apis.google.com/chart?chst=d_text_outline&chld=FFFFFF|20|h|000000|_|{}'.format(date))),
+                    KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
+                    KML.screenXY(x="0.02", y="0.95", xunits="fraction", yunits="fraction"),
+                    KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
+                    KML.size(x="0.2", y="0.05", xunits="fraction", yunits="fraction")
                 )
             )
         )
@@ -58,9 +66,9 @@ def SetDateInKML(kml, date):
             KML.name('Date'),
             KML.Icon(KML.href('http://chart.apis.google.com/chart?chst=d_text_outline&chld=FFFFFF|20|h|000000|_|{}'.format(date))),
             KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
-            KML.screenXY(x="0.02", y="0.9", xunits="fraction", yunits="fraction"),
+            KML.screenXY(x="0.02", y="0.95", xunits="fraction", yunits="fraction"),
             KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
-            KML.size(x="0.5", y="0.5", xunits="fraction", yunits="fraction")
+            KML.size(x="0.2", y="0.05", xunits="fraction", yunits="fraction")
         )
     )
     return kml
@@ -110,5 +118,5 @@ def CreateRegionsKML(regions, withDate):
 
 def CreateKML(regions, withDate):
     CreateRegionsKML(regions, withDate)
-    CreateColorbarKML()
+    CreateDateAndColorbarKML()
     CreateLogosKML()
