@@ -12,8 +12,8 @@ def sendKmlToLG(filename):
     print(command)
     os.system(command)
     command = "sshpass -p " + global_vars.master_pass + " ssh " + global_vars.master_IP \
-        + " echo http://localhost:81/SF/" + global_vars.kml_destination_filename + "?id=" + int(time()*100) \
-        + " > /var/www/html/kmls.txt"
+        + " \"echo http://localhost:81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) \
+        + " > /var/www/html/kmls.txt\""
     print(command)
     os.system(command)
 
