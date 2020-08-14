@@ -37,7 +37,7 @@
 
 ## For Django Web Application
 1. Activate Virtual Env
-   ``` 
+   ```
    source <"VIRTUALENV FOLDER">/bin/activate
    ```
 
@@ -79,5 +79,5 @@
 
 2. Run the application
     ```
-    python manage.py runserver
+    ./startDjango.sh
     ```
