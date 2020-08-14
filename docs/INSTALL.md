@@ -61,23 +61,17 @@
    python manage.py migrate
    ```
 
-## For LG master
+## RUN
 1. Modify `app.conf` file adding the Server's IP and the Master's IP
 
-2. Add permissions to the script file that we will use to send files to master
-   ```
-   chmod +x setMasterKmlTxt.sh
-   ```
+2. Ensure you are inside Seasight-Forecasting/django
 
-3. Run the script
-   ```
-   ./setMasterKmlTxt.sh
-   ```
-
-## RUN
-1. Ensure you are inside Seasight-Forecasting/django
-
-2. Run the application
+3. Run the application
     ```
     ./startDjango.sh
     ```
+
+4. Run the script
+   ```
+   ./setMasterKmlTxt.sh
+   ```
