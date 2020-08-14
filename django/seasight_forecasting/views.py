@@ -10,13 +10,13 @@ def index(request):
     LoadConfigFile()
     return render(request, 'seasight_forecasting/index.html', {})
 
-def run_historic():
+def run_historic(request):
     region = request.POST.get('region')
     dateFrom = request.POST.get('dateFrom')
     check = request.POST.get('check')
     dateTo = request.POST.get('dateTo')
     GenerateHistoricKML(region, dateFrom, check, dateTo)
-    startSendKMLThread()
+    # startSendKMLThread()
 
 def stop_thread():
     stopSendKMLThread()
@@ -28,7 +28,7 @@ def past(request):
 
     if request.method == 'POST':
         if request.POST.get("Submit") == "Submit":
-            run_historic()
+            run_historic(request)
         if request.POST.get("Stop") == "Stop":
             stop_thread()
 

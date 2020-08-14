@@ -1,4 +1,5 @@
 
+import os
 from seasight_forecasting import global_vars
 from seasight_forecasting.Clustering import *
 from seasight_forecasting.GenerateKML import *
@@ -18,6 +19,14 @@ def PrepareData(data):
     data.lat = pd.to_numeric(data.lat, errors='coerce').fillna(0).astype(float)
     data.sst = round(pd.to_numeric(data.sst, errors='coerce').fillna(0).astype(float), 1)
     return data
+
+def RemoveOldHistoricFiles():
+    dir_name = global_vars.kml_destination_path
+    files = os.listdir(dir_name)
+
+    for item in files:
+        if item.startswith("historic"):
+            os.remove(os.path.join(dir_name, item))
 
 def CreateSingleFrameKML(data):
     print('Number of clusters: {}'.format(global_vars.number_of_clusters))
@@ -44,16 +53,15 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo):
     print('DATA AFTER REGION FILTER')
 
     try:
-        regions = []
         print('Number of clusters: {}'.format(global_vars.number_of_clusters))
         print('Start Clustering...')
+        RemoveOldHistoricFiles()
         for group in data.groupby(['time']):
             data = group[1]
             data = data.drop(['time'], axis=1)
             ngroup = GetClusters(global_vars.number_of_clusters, data)
-            regions.append(GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data.sst.min(), data.sst.max()), group[0].date()))
+            regions = GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data.sst.min(), data.sst.max()), group[0].date())
             CreateKML(regions, True)
-        print('Clustering DONE!')
         message = 'Created KML files in {}'.format(global_vars.kml_destination_path)
     except Exception as e:
         message = "ERROR: {}".format(e)

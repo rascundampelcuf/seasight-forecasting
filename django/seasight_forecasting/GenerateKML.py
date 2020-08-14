@@ -56,7 +56,7 @@ def SetDateInKML(kml, date):
     kml.Document.Folder.append(
         KML.ScreenOverlay(
             KML.name('Date'),
-            KML.Icon(KML.href('![CDATA[http://chart.apis.google.com/chart?chst=d_text_outline&chld=FFBBBB|16|h|BB0000|b|{}]]'.format(date))),
+            KML.Icon(KML.href('http://chart.apis.google.com/chart?chst=d_text_outline&chld=FFFFFF|20|h|000000|_|{}'.format(date))),
             KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
             KML.screenXY(x="0.02", y="0.9", xunits="fraction", yunits="fraction"),
             KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
@@ -76,10 +76,10 @@ def CreateRegionsKML(regions, withDate):
     filename = global_vars.kml_destination_filename
 
     if withDate:
-        regions = list(itertools.chain.from_iterable(regions))
         date = regions.pop()
         SetDateInKML(kml, date)
         filename = 'historic_' + str(date) + '.kml'
+        print(filename)
 
     for region in regions:
         color = region.pop()
