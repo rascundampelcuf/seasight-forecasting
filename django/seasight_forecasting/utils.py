@@ -19,6 +19,7 @@ def sendKmlToLG(filename):
 
 def threaded_function():
     files = os.listdir(global_vars.kml_destination_path)
+    files = [i for i in files if i.startswith('historic')]
     for elem in itertools.cycle(files):
         sendKmlToLG(elem)
         sleep(global_vars.sleep_in_thread)
