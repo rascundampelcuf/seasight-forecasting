@@ -8,7 +8,7 @@ from seasight_forecasting.CaseMethods import *
 
 def index(request):
     LoadConfigFile()
-    return render(request, 'seasight_forecasting/index.html', {})
+    return render(request, 'index.html', {})
 
 def run_historic(request):
     region = request.POST.get('region')
@@ -32,7 +32,7 @@ def past(request):
         if request.POST.get("Stop") == "Stop":
             stop_thread()
 
-    return render(request, 'seasight_forecasting/past.html', context)
+    return render(request, 'past.html', context)
 
 
 
@@ -42,7 +42,7 @@ def present(request):
         region = request.POST.get('region')
         GenerateRealTimeKML(region)
         sendKmlToLG(global_vars.kml_destination_filename)
-    return render(request, 'seasight_forecasting/present.html', {})
+    return render(request, 'present.html', {})
 
 def future(request):
     LoadConfigFile()
@@ -50,7 +50,7 @@ def future(request):
         region = request.POST.get('region')
         GenerateFutureKML(region)
         sendKmlToLG(global_vars.kml_destination_filename)
-    return render(request, 'seasight_forecasting/future.html', {})
+    return render(request, 'future.html', {})
 
 def demo(request):
     LoadConfigFile()
