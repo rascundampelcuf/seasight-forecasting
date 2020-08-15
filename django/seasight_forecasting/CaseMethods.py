@@ -32,7 +32,7 @@ def CreateSingleFrameKML(data):
     print('Number of clusters: {}'.format(global_vars.number_of_clusters))
     print('Start Clustering...')
     data = GetClusters(global_vars.number_of_clusters, data)
-    regions = GetRegions(global_vars.number_of_clusters, data, InitCmap(data.sst.min(), data.sst.max()), False)
+    regions = GetRegions(global_vars.number_of_clusters, data, InitCmap(data.sst.min(), data.sst.max()))
     print('Clustering DONE!')
     CreateKML(regions, False)
     return 'Created KML files in {}'.format(global_vars.kml_destination_path)
@@ -60,8 +60,8 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo):
             data = group[1]
             data = data.drop(['time'], axis=1)
             ngroup = GetClusters(global_vars.number_of_clusters, data)
-            regions = GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data.sst.min(), data.sst.max()), group[0].date())
-            CreateKML(regions, True)
+            regions = GetRegions(global_vars.number_of_clusters, ngroup, InitCmap(data.sst.min(), data.sst.max()))
+            CreateKML(regions, group[0].date())
         message = 'Created KML files in {}'.format(global_vars.kml_destination_path)
     except Exception as e:
         message = "ERROR: {}".format(e)

@@ -12,7 +12,7 @@ def GetCoords(region):
         string += '{},{},40000\n'.format(p[0], p[1])
     return string
 
-def CreateDateAndColorbarKML():
+def CreateDateAndColorbarKML(date):
     kml = KML.kml(
         KML.Document(
             KML.Folder(
@@ -23,7 +23,13 @@ def CreateDateAndColorbarKML():
                     KML.screenXY(x="0.02", y="0.02", xunits="fraction", yunits="fraction"),
                     KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
                     KML.size(x="0", y="0", xunits="fraction", yunits="fraction")
-                ),
+                )
+            )
+        )
+    )
+
+    if date:
+        kml.Document.Folder.append(
                 KML.ScreenOverlay(
                     KML.name('Date'),
                     KML.Icon(KML.href('http://chart.apis.google.com/chart?chst=d_text_outline&chld=FFFFFF|20|h|000000|_|{}'.format(date))),
@@ -33,8 +39,7 @@ def CreateDateAndColorbarKML():
                     KML.size(x="0.2", y="0.05", xunits="fraction", yunits="fraction")
                 )
             )
-        )
-    )
+
     f = open(global_vars.kml_destination_path + 'slave_{}.kml'.format(global_vars.screen_for_colorbar), "w")
     out = etree.tostring(kml, pretty_print=True).decode("utf-8")
     f.write(out)
@@ -60,20 +65,7 @@ def CreateLogosKML():
     f.write(out)
     f.close()
 
-def SetDateInKML(kml, date):
-    kml.Document.Folder.append(
-        KML.ScreenOverlay(
-            KML.name('Date'),
-            KML.Icon(KML.href('http://chart.apis.google.com/chart?chst=d_text_outline&chld=FFFFFF|20|h|000000|_|{}'.format(date))),
-            KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
-            KML.screenXY(x="0.02", y="0.95", xunits="fraction", yunits="fraction"),
-            KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
-            KML.size(x="0.2", y="0.05", xunits="fraction", yunits="fraction")
-        )
-    )
-    return kml
-
-def CreateRegionsKML(regions, withDate):
+def CreateRegionsKML(regions, date):
     kml = KML.kml(
         KML.Document(
             KML.Folder(
@@ -83,15 +75,12 @@ def CreateRegionsKML(regions, withDate):
 
     filename = global_vars.kml_destination_filename
 
-    if withDate:
-        date = regions.pop()
-        SetDateInKML(kml, date)
+    if date:
         filename = 'historic_' + str(date) + '.kml'
         print(filename)
 
     for region in regions:
         color = region.pop()
-
         kml.Document.Folder.append(
             KML.Placemark(
                 KML.Style(
@@ -116,7 +105,7 @@ def CreateRegionsKML(regions, withDate):
     f.write(out)
     f.close()
 
-def CreateKML(regions, withDate):
-    CreateRegionsKML(regions, withDate)
-    CreateDateAndColorbarKML()
+def CreateKML(regions, date):
+    CreateRegionsKML(regions, date)
+    CreateDateAndColorbarKML(date)
     CreateLogosKML()

@@ -37,7 +37,7 @@ def GetClusters(n_clusters, data):
     data['labels'] = cluster.labels_
     return data
 
-def GetRegions(n_clusters, data, cmap, date):
+def GetRegions(n_clusters, data, cmap):
     regions = []
     for cluster in range(n_clusters):
         points = data[data.labels == cluster]
@@ -55,7 +55,5 @@ def GetRegions(n_clusters, data, cmap, date):
         # Convert the mean temperature value into a color
         region.append(GetColor(points['sst'].mean(), cmap))
         regions.append(region)
-    if date:
-        regions.append(str(date))
     return regions
 
