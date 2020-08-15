@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -34,26 +34,25 @@
                     </form>
                 </center>
             </div>
-        </div>
-        <div>
-            <center>
-                <form action="demo">
-                    <input type="submit" value="DEMO" class="button" />
-                </form>
-            </center>
+            <div>
+                <img src="{% static 'img/demo.jpg' %}" class="case_img">
+                <center>
+                    <form action="demo">
+                        <input type="submit" value="DEMO" class="button" />
+                    </form>
+                </center>
+            </div>
         </div>
         <div class="content-logos">
-            <div class="logos-line-1">
+            <center>
                 <img src="{% static 'logos/LG-logo.png' %}" class="logo-elem">
-            </div>
-            <div class="logos-line-2">
                 <img src="{% static 'logos/LGlab-logo.png' %}" class="logo-elem">
                 <img src="{% static 'logos/labTIC-logo.png' %}" class="logo-elem">
                 <img src="{% static 'logos/PCITAL-logo.jpg' %}" class="logo-elem">
                 <img src="{% static 'logos/GSOC-logo.png' %}" class="logo-elem">
                 <img src="{% static 'logos/LGEU-logo.png' %}" class="logo-elem">
                 <img src="{% static 'logos/UOC-logo.png' %}" class="logo-elem">
-            </div>
+            </center>
         </div>
     </body>
 </html>

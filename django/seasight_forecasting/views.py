@@ -8,6 +8,7 @@ from seasight_forecasting.CaseMethods import *
 
 def index(request):
     LoadConfigFile()
+    cleanVerbose()
     return render(request, 'index.html', {})
 
 def run_historic(request):
@@ -28,17 +29,17 @@ def past(request):
 
     if request.method == 'POST':
         if request.POST.get("Submit") == "Submit":
+            cleanVerbose()
             run_historic(request)
         if request.POST.get("Stop") == "Stop":
             stop_thread()
 
     return render(request, 'past.html', context)
 
-
-
 def present(request):
     LoadConfigFile()
     if request.method == 'POST':
+        cleanVerbose()
         region = request.POST.get('region')
         GenerateRealTimeKML(region)
         sendKmlToLG(global_vars.kml_destination_filename)
@@ -47,6 +48,7 @@ def present(request):
 def future(request):
     LoadConfigFile()
     if request.method == 'POST':
+        cleanVerbose()
         region = request.POST.get('region')
         GenerateFutureKML(region)
         sendKmlToLG(global_vars.kml_destination_filename)

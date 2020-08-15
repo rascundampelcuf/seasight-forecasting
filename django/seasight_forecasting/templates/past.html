@@ -36,13 +36,12 @@
         </div>
 
         <h1>Historic visualization</h1>
-        {{ response }}
         <div class="container">
             <div>
                 {% include "./canvas.html" %}
             </div>
             <div>
-                <form action="{% url 'past' %}" method="POST" name="GenerateKML">
+                <form action="{% url 'past' %}" method="POST" name="GenerateKML" onsubmit="return onSubmit();">
                     {% csrf_token %}
                     <div>
                         <span>Region: </span>
@@ -63,6 +62,8 @@
                     <input type="submit" value="Submit" name="Submit" onclick="return validatePastForm();">
                     <input type="submit" value="Stop" name="Stop">
                 </form>
+                <div id="verbose" class="verbose"></div>
+                <div id="spinner" class="spinnercnt"><img src="{% static 'img/spinner.gif' %}" class="spinner"></div>
             </div>
         </div>
     </body>

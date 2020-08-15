@@ -40,3 +40,16 @@ def startSendKMLThread():
 
 def stopSendKMLThread():
     global_vars.thread = False
+def cleanVerbose():
+    fName = 'seasight_forecasting/static/scripts/verbose.txt'
+    with open(fName, "w"):
+        pass
+
+def writeVerbose(text):
+    fName = 'seasight_forecasting/static/scripts/verbose.txt'
+    with open(fName, "a+") as f:
+        f.seek(0)
+        data = f.read()
+        if len(data) > 0 :
+            f.write("<br>")
+        f.write(text)

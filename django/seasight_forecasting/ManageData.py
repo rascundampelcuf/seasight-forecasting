@@ -9,6 +9,7 @@ import pandas as pd
 import xarray as xr
 from shapely.ops import cascaded_union
 from seasight_forecasting import global_vars
+from seasight_forecasting.utils import *
 
 def LoadData(data_path):
     return pd.read_csv(data_path)
@@ -18,8 +19,11 @@ def GetDataFromAPI():
     tmpPath = 'tmp/'
     filePath = 'file/'
 
-    os.mkdir(tmpPath)
+    if os.path.isdir(tmpPath):
+        shutil.rmtree(tmpPath, ignore_errors=True)
 
+    os.mkdir(tmpPath)
+    writeVerbose('Downloading data from Copernicus CDS API...')
     c = cdsapi.Client()
     c.retrieve(
         'satellite-sea-surface-temperature',
@@ -39,8 +43,12 @@ def GetDataFromAPI():
         zip_ref.extractall(tmpPath + filePath)
 
     for filename in os.listdir(tmpPath + filePath):
-        print('Downloaded file: {}'.format(filename))
-        print('Converting downloaded data into dataframe...')
+        message = 'Downloaded file: {}'.format(filename)
+        print(message)
+        writeVerbose(message)
+        message = 'Converting downloaded data into dataframe...'
+        print(message)
+        writeVerbose(message)
         with xr.open_dataset(tmpPath + filePath + '/' + filename) as ds:
             ds = (ds.to_dataframe()).dropna()
             ds = ds.rename(columns={"analysed_sst": "sst"})
@@ -49,10 +57,11 @@ def GetDataFromAPI():
             ds['lat'] = ds['lat'].apply(lambda x: round(x * 2) / 2)
             ds['lon'] = ds['lon'].apply(lambda x: round(x * 2) / 2)
             data = ds.groupby(['time', 'lat', 'lon'])['sst'].mean().reset_index()
-
+    writeVerbose('Data conversion DONE')
     shutil.rmtree(tmpPath, ignore_errors=True)
-    print('Temporary files removed!')
-
+    message = 'Temporary files removed!'
+    print(message)
+    writeVerbose(message)
     return data
 
 def GetDataFromRegion(data, region):

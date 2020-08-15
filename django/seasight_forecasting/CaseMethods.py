@@ -5,6 +5,7 @@ from seasight_forecasting.Clustering import *
 from seasight_forecasting.GenerateKML import *
 from seasight_forecasting.ManageData import *
 from seasight_forecasting.ManageModel import *
+from seasight_forecasting.utils import *
 
 def GetDate():
     data = LoadData(global_vars.historic_file_path)
@@ -30,20 +31,27 @@ def RemoveOldHistoricFiles():
 
 def CreateSingleFrameKML(data):
     print('Number of clusters: {}'.format(global_vars.number_of_clusters))
-    print('Start Clustering...')
+    message = 'Start Clustering...'
+    print(message)
+    writeVerbose(message)
     data = GetClusters(global_vars.number_of_clusters, data)
     regions = GetRegions(global_vars.number_of_clusters, data, InitCmap(data.sst.min(), data.sst.max()))
-    print('Clustering DONE!')
+    message = 'Clustering DONE!'
+    print(message)
+    writeVerbose(message)
     CreateKML(regions, False)
     return 'Created KML files in {}'.format(global_vars.kml_destination_path)
 
 def GenerateHistoricKML(region, dateFrom, check, dateTo):
     data = LoadData(global_vars.historic_file_path)
+    writeVerbose('Data loading DONE')
     data = PrepareData(data)
     print(data)
     print('ORIGINAL DATA')
 
-    print('Start date and region filtering...')
+    message = 'Start date and region filtering...'
+    print(message)
+    writeVerbose(message)
     data = GetDataInDateRange(data, dateFrom, check, dateTo)
     print(data)
     print('DATA AFTER DATE FILTER')
@@ -51,10 +59,13 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo):
     data = GetDataFromRegion(data, region)
     print(data)
     print('DATA AFTER REGION FILTER')
+    writeVerbose('Data filtering DONE')
 
     try:
         print('Number of clusters: {}'.format(global_vars.number_of_clusters))
-        print('Start Clustering...')
+        message = 'Start Clustering...'
+        print(message)
+        writeVerbose(message)
         RemoveOldHistoricFiles()
         for group in data.groupby(['time']):
             data = group[1]
@@ -66,6 +77,7 @@ def GenerateHistoricKML(region, dateFrom, check, dateTo):
     except Exception as e:
         message = "ERROR: {}".format(e)
     print(message)
+    writeVerbose(message)
 
 def GenerateRealTimeKML(region):
     data = GetDataFromAPI()
@@ -74,16 +86,20 @@ def GenerateRealTimeKML(region):
     print(data)
     print('ORIGINAL DATA')
 
-    print('Start region filtering...')
+    message = 'Start region filtering...'
+    print(message)
+    writeVerbose(message)
     data = GetDataFromRegion(data, region)
     print(data)
     print('DATA AFTER REGION FILTERING')
+    writeVerbose('Data filtering DONE')
 
     try:
         message = CreateSingleFrameKML(data)
     except Exception as e:
         message = "ERROR: {}".format(e)
     print(message)
+    writeVerbose(message)
 
 def GenerateFutureKML(region):
     data = LoadData(global_vars.historic_file_path)
@@ -93,19 +109,27 @@ def GenerateFutureKML(region):
     print(data)
     print('ORIGINAL DATA')
 
-    print('Start region filtering...')
+    message = 'Start region filtering...'
+    print(message)
+    writeVerbose(message)
     data = GetDataFromRegion(data, region)
     print(data)
     print('DATA AFTER REGION FILTERING')
+    writeVerbose('Data filtering DONE')
 
-    print('Start Prediction...')
+    message = 'Start Prediction...'
+    print(message)
+    writeVerbose(message)
     data = PredictedData(data)
     print(data)
     print('PREDICTED DATA')
-    print('Prediction DONE!')
+    message = 'Prediction DONE!'
+    print(message)
+    writeVerbose(message)
 
     try:
         message = CreateSingleFrameKML(data)
     except Exception as e:
         message = "ERROR: {}".format(e)
     print(message)
+    writeVerbose(message)

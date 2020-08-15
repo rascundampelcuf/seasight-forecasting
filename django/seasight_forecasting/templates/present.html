@@ -1,9 +1,10 @@
 {% load static %}
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
     <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <head>
         <title>Seasight Forecasting App</title>
     </head>
@@ -17,7 +18,7 @@
                     <img src="{% static 'img/marine_temp.jpg' %}" class="header_img">
                 </div>
             </div>
-        </div>            
+        </div>
 
         <h1>Real time visualization</h1>
         {{ response }}
@@ -25,16 +26,18 @@
             <div>
                 {% include "./canvas.html" %}
             </div>
-            <div>                
-                <form action="{% url 'present' %}" method="POST" id="formKML" name="GenerateKML" onsubmit="return validateForm()">
-                    {% csrf_token %}                    
+            <div>
+                <form action="{% url 'present' %}" method="POST" id="formKML" name="GenerateKML" onsubmit="return onSubmit();">
+                    {% csrf_token %}
                     <div>
                         <span>Region: </span>
                         <input type="text" id="region" name="region" value="--" readonly="readonly">
                         <span id="regionVal" class="textVal"></span>
                     </div>
-                    <input type="submit">
+                    <input type="submit" onclick="return validateForm();">
                 </form>
+                <div id="verbose" class="verbose"></div>
+                <div id="spinner" class="spinnercnt"><img src="{% static 'img/spinner.gif' %}" class="spinner"></div>
             </div>
         </div>
     </body>

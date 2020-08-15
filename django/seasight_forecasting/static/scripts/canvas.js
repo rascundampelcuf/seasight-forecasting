@@ -104,3 +104,27 @@ function validateForm() {
         return false;
     }
 }
+
+function onSubmit() {
+    enableSpinner();
+    return true;
+}
+
+function checkVerbose() {
+    jQuery.get("../static/scripts/verbose.txt",function(data){$('#verbose').html(data);});
+    setTimeout(function(){checkVerbose() },1000);
+}
+
+function enableSpinner() {
+    $('#spinner').show();
+}
+
+function disableSpinner() {
+    $('#spinner').hide();
+}
+
+$(document).ready(function() {
+    disableSpinner();
+});
+
+checkVerbose();
