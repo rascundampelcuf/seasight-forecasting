@@ -10,7 +10,7 @@ import xarray as xr
 from shapely.ops import cascaded_union
 from seasight_forecasting import global_vars
 
-def LoadData(data_path):    
+def LoadData(data_path):
     return pd.read_csv(data_path)
 
 def GetDataFromAPI():
@@ -37,9 +37,10 @@ def GetDataFromAPI():
 
     with zipfile.ZipFile(tmpPath + 'download.zip', 'r') as zip_ref:
         zip_ref.extractall(tmpPath + filePath)
-    
+
     for filename in os.listdir(tmpPath + filePath):
         print('Downloaded file: {}'.format(filename))
+        print('Converting downloaded data into dataframe...')
         with xr.open_dataset(tmpPath + filePath + '/' + filename) as ds:
             ds = (ds.to_dataframe()).dropna()
             ds = ds.rename(columns={"analysed_sst": "sst"})
@@ -48,7 +49,7 @@ def GetDataFromAPI():
             ds['lat'] = ds['lat'].apply(lambda x: round(x * 2) / 2)
             ds['lon'] = ds['lon'].apply(lambda x: round(x * 2) / 2)
             data = ds.groupby(['time', 'lat', 'lon'])['sst'].mean().reset_index()
-    
+
     shutil.rmtree(tmpPath, ignore_errors=True)
     print('Temporary files removed!')
 
