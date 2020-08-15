@@ -11,8 +11,8 @@ def sendKmlToLG(filename):
         + " " + global_vars.lg_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
     print(command)
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
-        + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + "slave_" + global_vars.screen_for_colorbar \
-        + ".kml " + global_vars.lg_IP + ":/var/www/html/kml/slave_" + global_vars.screen_for_colorbar + ".kml"
+        + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + "slave_" + str(global_vars.screen_for_colorbar) \
+        + ".kml " + global_vars.lg_IP + ":/var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml"
     print(command)
     os.system(command)
     os.system(command)
