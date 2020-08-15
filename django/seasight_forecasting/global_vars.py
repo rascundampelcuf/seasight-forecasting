@@ -15,8 +15,8 @@ cmap = ''
 sleep_in_thread = 0
 
 server_IP = 0
-master_IP = 0
-master_pass = ''
+lg_IP = 0
+lg_pass = ''
 screen_for_logos = 3
 screen_for_colorbar = 2
 project_location = ''

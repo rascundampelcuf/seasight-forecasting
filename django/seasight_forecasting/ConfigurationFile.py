@@ -24,8 +24,8 @@ def LoadConfigFile():
     global_vars.sleep_in_thread = int(config['KML']['sleep_in_thread'])
 
     global_vars.server_IP = config['INSTALLATION']['server_IP']
-    global_vars.master_IP = config['INSTALLATION']['master_IP']
-    global_vars.master_pass = config['INSTALLATION']['master_pass']
+    global_vars.lg_IP = config['INSTALLATION']['lg_IP']
+    global_vars.lg_pass = config['INSTALLATION']['lg_pass']
     global_vars.screen_for_logos = int(config['INSTALLATION']['screen_for_logos'])
     global_vars.screen_for_colorbar = int(config['INSTALLATION']['screen_for_colorbar'])
     global_vars.project_location = config['INSTALLATION']['project_location']

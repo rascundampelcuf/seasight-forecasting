@@ -6,17 +6,17 @@ from threading import Thread
 from time import sleep, time
 
 def sendKmlToLG(filename):
-    command = "sshpass -p " + global_vars.master_pass + " scp $HOME/" + global_vars.project_location \
+    command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
         + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + filename \
-        + " " + global_vars.master_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
+        + " " + global_vars.lg_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
     print(command)
-    command = "sshpass -p " + global_vars.master_pass + " scp $HOME/" + global_vars.project_location \
+    command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
         + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + "slave_" + global_vars.screen_for_colorbar \
-        + ".kml " + global_vars.master_IP + ":/var/www/html/kml/slave_" + global_vars.screen_for_colorbar + ".kml"
+        + ".kml " + global_vars.lg_IP + ":/var/www/html/kml/slave_" + global_vars.screen_for_colorbar + ".kml"
     print(command)
     os.system(command)
     os.system(command)
-    command = "sshpass -p " + global_vars.master_pass + " ssh " + global_vars.master_IP \
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
         + " \"echo http://localhost:81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) \
         + " > /var/www/html/kmls.txt\""
     print(command)
