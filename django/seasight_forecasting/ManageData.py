@@ -70,7 +70,8 @@ def GetDataFromRegion(data, region):
         "South Atlantic Ocean": global_vars.south_atlantic_region_path,
         "Indian Ocean": global_vars.indian_region_path,
         "West Pacific Ocean": global_vars.west_pacific_region_path,
-        "East Pacific Ocean": global_vars.east_pacific_region_path,
+        "North-East Pacific Ocean": global_vars.north_east_pacific_region_path,
+        "South-East Pacific Ocean": global_vars.south_east_pacific_region_path
     }
     regionFile = gpd.read_file(regions[region])
     pol = cascaded_union(regionFile['geometry'])

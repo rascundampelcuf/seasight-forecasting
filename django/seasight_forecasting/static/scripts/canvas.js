@@ -23,7 +23,8 @@ var regionDict = {
     2: "South Atlantic Ocean",
     3: "Indian Ocean",
     4: "West Pacific Ocean",
-    5: "East Pacific Ocean"
+    5: "North-East Pacific Ocean",
+    6: "South-East Pacific Ocean"
 }
 
 function setRegion(region) {
@@ -37,7 +38,8 @@ var rects = [
     {x: 220, y: 304, w: 170, h: 140, r: 2},
     {x: 424, y: 220, w: 140, h: 224, r: 3},
     {x: 568, y: 120, w: 140, h: 324, r: 4},
-    {x: 20, y: 150, w: 156, h: 294, r: 5},
+    {x: 20, y: 150, w: 156, h: 150, r: 5},
+    {x: 20, y: 304, w: 196, h: 140, r: 6},
 ], i = 0, r;
 var region = 0;
 ctx.clearRect(0, 0, canvas.width, canvas.height);
