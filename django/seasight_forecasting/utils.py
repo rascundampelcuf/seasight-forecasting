@@ -43,7 +43,7 @@ def threaded_function():
     writeVerbose('main: ' + str(main))
     writeVerbose('slave: ' + str(slave))
     for elem in itertools.cycle(list(zip(main, slave))):
-        sendKmlToLG(elem)
+        sendKmlToLGHistoric(elem)
         sleep(global_vars.sleep_in_thread)
         if global_vars.thread == False:
             print("thread finished...exiting")
