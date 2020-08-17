@@ -32,7 +32,6 @@ def sendKmlToLGHistoric(files):
 def threaded_function():
     files = os.listdir(global_vars.kml_destination_path)
     files = [i for i in files if i.startswith('historic')]
-    writeVerbose(str(files))
     main = []
     slave = []
     for elem in files:
@@ -40,8 +39,6 @@ def threaded_function():
             slave.append(elem)
         else:
             main.append(elem)
-    writeVerbose('main: ' + str(main))
-    writeVerbose('slave: ' + str(slave))
     for elem in itertools.cycle(list(zip(main, slave))):
         sendKmlToLGHistoric(elem)
         sleep(global_vars.sleep_in_thread)
