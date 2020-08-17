@@ -44,7 +44,7 @@ def present(request):
         cleanVerbose()
         region = GetRegionFromFile(request.POST.get('region'))
         GenerateRealTimeKML(region)
-        sendKmlToLG(global_vars.kml_destination_filename)
+        sendKmlToLGCommon(global_vars.kml_destination_filename)
         flyToRegion(region)
     return render(request, 'present.html', {})
 
@@ -54,7 +54,7 @@ def future(request):
         cleanVerbose()
         region = GetRegionFromFile(request.POST.get('region'))
         GenerateFutureKML(region)
-        sendKmlToLG(global_vars.kml_destination_filename)
+        sendKmlToLGCommon(global_vars.kml_destination_filename)
         flyToRegion(region)
     return render(request, 'future.html', {})
 
