@@ -18,8 +18,8 @@ def run_historic(request):
     dateTo = request.POST.get('dateTo')
     region = GetRegionFromFile(request.POST.get('region'))
     GenerateHistoricKML(region, dateFrom, check, dateTo)
-    flyToRegion(region)
     startSendKMLThread()
+    flyToRegion(region)
 
 def stop_thread():
     stopSendKMLThread()
@@ -44,8 +44,8 @@ def present(request):
         cleanVerbose()
         region = GetRegionFromFile(request.POST.get('region'))
         GenerateRealTimeKML(region)
-        flyToRegion(region)
         sendKmlToLG(global_vars.kml_destination_filename)
+        flyToRegion(region)
     return render(request, 'present.html', {})
 
 def future(request):
@@ -54,8 +54,8 @@ def future(request):
         cleanVerbose()
         region = GetRegionFromFile(request.POST.get('region'))
         GenerateFutureKML(region)
-        flyToRegion(region)
         sendKmlToLG(global_vars.kml_destination_filename)
+        flyToRegion(region)
     return render(request, 'future.html', {})
 
 def demo(request):
