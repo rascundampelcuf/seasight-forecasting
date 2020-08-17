@@ -1,24 +1,24 @@
 
 import itertools
 import os
-import simplekml
+#import simplekml
 from seasight_forecasting import global_vars
 from threading import Thread
 from time import sleep, time
 
-def sendKmlToLG(filename):
+def sendKmlToLG(files):
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
-        + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + filename \
+        + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + files[0] \
         + " " + global_vars.lg_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
     print(command)
+    os.system(command)
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
-        + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + "slave_" + str(global_vars.screen_for_colorbar) \
-        + ".kml " + global_vars.lg_IP + ":/var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml"
+        + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + files[1] + " " \
+        + global_vars.lg_IP + ":/var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml"
     print(command)
     os.system(command)
-    os.system(command)
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " \"echo http://localhost:81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) \
+        + " \"echo http://" + global_vars.lg_IP + ":81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) \
         + " > /var/www/html/kmls.txt\""
     print(command)
     os.system(command)
@@ -26,7 +26,17 @@ def sendKmlToLG(filename):
 def threaded_function():
     files = os.listdir(global_vars.kml_destination_path)
     files = [i for i in files if i.startswith('historic')]
-    for elem in itertools.cycle(files):
+    writeVerbose(str(files))
+    main = []
+    slave = []
+    for elem in files:
+        if elem.endswith('slave_{}.kml'.format(global_vars.screen_for_colorbar)):
+            slave.append(elem)
+        else:
+            main.append(elem)
+    writeVerbose('main: ' + str(main))
+    writeVerbose('slave: ' + str(slave))
+    for elem in itertools.cycle(list(zip(main, slave))):
         sendKmlToLG(elem)
         sleep(global_vars.sleep_in_thread)
         if global_vars.thread == False:
@@ -56,15 +66,16 @@ def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
             + "</LookAt>"
 
     command = "echo '" + flyTo + "' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    print(command)
     os.system(command)
 
 def doRotation(playList, latitude, longitude, altitude, pRange):
     for angle in range(0, 360, 10):
         flyto = playList.newgxflyto(gxduration=1.0)
-        flyto.gxflytomode = simplekml.GxFlyToMode.smooth
-        flyto.altitudemode = simplekml.AltitudeMode.relativetoground
+        #flyto.gxflytomode = simplekml.GxFlyToMode.smooth
+        #flyto.altitudemode = simplekml.AltitudeMode.relativetoground
 
-        flyto.lookat.gxaltitudemode = simplekml.GxAltitudeMode.relativetoseafloor
+        #flyto.lookat.gxaltitudemode = simplekml.GxAltitudeMode.relativetoseafloor
         flyto.lookat.longitude = float(longitude)
         flyto.lookat.latitude = float(latitude)
         flyto.lookat.altitude = altitude
