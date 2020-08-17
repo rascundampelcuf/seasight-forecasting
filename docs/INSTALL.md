@@ -17,7 +17,7 @@
 
 4. Clone this repository
    ```
-   git clone https://github.com/LiquidGalaxyLAB/Seasight-Forecasting.git
+   git clone https://github.com/rascundampelcuf/Seasight-Forecasting.git
    ```
 
 5. Move the API credentials file to HOME
