@@ -24,7 +24,7 @@ def sendKmlToLG(main, slave):
     os.system(command)
 
 def sendKmlToLGCommon(filename):
-    sendKmlToLG(filename, filename)
+    sendKmlToLG(filename, 'slave_{}.kml'.format(global_vars.screen_for_colorbar))
 
 def sendKmlToLGHistoric(files):
     sendKmlToLG(files[0], files[1])

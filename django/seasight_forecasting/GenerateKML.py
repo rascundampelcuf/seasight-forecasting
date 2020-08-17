@@ -5,6 +5,7 @@ import itertools
 from lxml import etree
 from pykml.factory import KML_ElementMaker as KML
 from seasight_forecasting import global_vars
+from time import time
 
 def GetCoords(region):
     string = ''
@@ -17,7 +18,7 @@ def CreateDateAndColorbarKML(date):
         KML.Document(
             KML.Folder(
                 KML.ScreenOverlay(
-                    KML.name('Colorbar'),
+                    KML.name('Colorbar - id: {}'.format(str(int(time()*100)))),
                     KML.Icon(KML.href('http://{}:8000/static/img/colorbar.png'.format(global_vars.server_IP))),
                     KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
                     KML.screenXY(x="0.85", y="0.8", xunits="fraction", yunits="fraction"),
