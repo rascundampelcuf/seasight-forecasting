@@ -94,3 +94,7 @@ def getCenterOfRegion(region):
 def flyToRegion(region):
     center_lat, center_lon = getCenterOfRegion(region)
     sendFlyToToLG(center_lat, center_lon, 15000000, 0, 0, 15000000, 2)
+
+def logprint(text):
+    if global_vars.logs:
+        print(text)
