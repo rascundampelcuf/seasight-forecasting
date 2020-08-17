@@ -21,5 +21,7 @@ lg_pass = ''
 screen_for_logos = 3
 screen_for_colorbar = 2
 project_location = ''
+logs = False
+show_verbose = False
 
 thread = False
