@@ -19,14 +19,20 @@ def CreateDateAndColorbarKML(date):
                 KML.ScreenOverlay(
                     KML.name('Colorbar'),
                     KML.Icon(KML.href('http://{}:8000/static/img/colorbar.png'.format(global_vars.server_IP))),
-                    KML.overlayXY(x="0", y="0", xunits="fraction", yunits="fraction"),
-                    KML.screenXY(x="0.02", y="0.02", xunits="fraction", yunits="fraction"),
+                    KML.overlayXY(x="0", y="1", xunits="fraction", yunits="fraction"),
+                    KML.screenXY(x="0.85", y="0.8", xunits="fraction", yunits="fraction"),
                     KML.rotationXY(x="0", y="0", xunits="fraction", yunits="fraction"),
-                    KML.size(x="0", y="0", xunits="fraction", yunits="fraction")
+                    KML.size(x="0.1", y="0.6", xunits="fraction", yunits="fraction")
                 )
             )
         )
     )
+
+    filename = 'slave_{}.kml'.format(global_vars.screen_for_colorbar)
+
+    if date:
+        filename = 'historic_' + str(date) + "_" + filename
+        print(filename)
 
     if date:
         kml.Document.Folder.append(
@@ -40,7 +46,7 @@ def CreateDateAndColorbarKML(date):
                 )
             )
 
-    f = open(global_vars.kml_destination_path + 'slave_{}.kml'.format(global_vars.screen_for_colorbar), "w")
+    f = open(global_vars.kml_destination_path + filename, "w")
     out = etree.tostring(kml, pretty_print=True).decode("utf-8")
     f.write(out)
     f.close()
