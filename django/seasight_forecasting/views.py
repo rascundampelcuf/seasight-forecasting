@@ -60,6 +60,14 @@ def future(request):
 
 def demo(request):
     LoadConfigFile()
-    #if request.method == 'POST':
-        #GenerateDemo()
+    if request.method == 'POST':
+        GenerateDemo()
+    return render(request, 'demo.html', {})
+
+def clean_KML(request):
+    cleanKMLFiles()
+    return HttpResponseRedirect("/")
+
+def clean_ALL(request):
+    cleanAllKMLFiles()
     return HttpResponseRedirect("/")

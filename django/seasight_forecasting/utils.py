@@ -100,15 +100,54 @@ def writeVerbose(text):
             f.write("<br>")
         f.write(text)
 
-def getCenterOfRegion(region):
-    lon = region.centroid.coords.xy[0][0]
-    lat = region.centroid.coords.xy[1][0]
-    return lat, lon
-
-def flyToRegion(region):
-    center_lat, center_lon = getCenterOfRegion(region)
-    sendFlyToToLG(center_lat, center_lon, 15000000, 0, 0, 15000000, 2)
-
 def logprint(text):
     if global_vars.logs:
         print(text)
+
+def cleanMainKML():
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+        + " \"echo '' > /var/www/html/kmls.txt\""
+    os.system(command)
+
+def cleanSecundaryKML():
+    string = "\"echo '<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?> \n" + \
+        "<kml xmlns=\\\"http://www.opengis.net/kml/2.2\\\"" + \
+        " xmlns:gx=\\\"http://www.google.com/kml/ext/2.2\\\"" + \
+        " xmlns:kml=\\\"http://www.opengis.net/kml/2.2\\\" " + \
+        " xmlns:atom=\\\"http://www.w3.org/2005/Atom\\\">\n" + \
+        " <Document id=\\\"slave_" + str(global_vars.screen_for_colorbar) + "\\\"> \n" + \
+        " </Document>\n" + \
+        " </kml>\n' > /var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml\""
+
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+        + " " + string
+    os.system(command)
+
+def cleanLogoKML():
+    string = "\"echo '<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?> \n" + \
+        "<kml xmlns=\\\"http://www.opengis.net/kml/2.2\\\"" + \
+        " xmlns:gx=\\\"http://www.google.com/kml/ext/2.2\\\"" + \
+        " xmlns:kml=\\\"http://www.opengis.net/kml/2.2\\\" " + \
+        " xmlns:atom=\\\"http://www.w3.org/2005/Atom\\\">\n" + \
+        " <Document id=\\\"slave_" + str(global_vars.screen_for_logos) + "\\\"> \n" + \
+        " </Document>\n" + \
+        " </kml>\n' > /var/www/html/kml/slave_" + str(global_vars.screen_for_logos) + ".kml\""
+
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+        + " " + string
+    os.system(command)
+
+def removeSFFolder():
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+        + " rm -rf /var/www/html/SF"
+    os.system(command)
+
+def cleanKMLFiles():
+    cleanMainKML()
+    cleanSecundaryKML()
+
+def cleanAllKMLFiles():
+    cleanMainKML()
+    cleanSecundaryKML()
+    cleanLogoKML()
+    removeSFFolder()
