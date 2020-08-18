@@ -93,3 +93,18 @@
 .spinner {
   width: 15%;
 }
+
+.head_logo_demo {
+  width: 8%;
+  position: absolute;
+}
+
+.demo_header {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+
+.demo_img {
+  width: 40%;
+}
