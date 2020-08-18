@@ -10,6 +10,7 @@ south_east_pacific_region_path = ''
 kml_destination_path = ''
 kml_destination_filename = ''
 image_destination_path = ''
+demo_files_path = ''
 
 number_of_clusters = 0
 cmap = ''
