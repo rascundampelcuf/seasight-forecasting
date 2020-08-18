@@ -12,11 +12,18 @@ def sendKmlToLG(main, slave):
         + " " + global_vars.lg_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
     print(command)
     os.system(command)
+
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+        + " \"echo "  \
+        + " > /var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml\""
+    print(command)
+    os.system(command)
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
         + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + slave + " " \
         + global_vars.lg_IP + ":/var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml"
     print(command)
     os.system(command)
+
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
         + " \"echo http://" + global_vars.lg_IP + ":81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) \
         + " > /var/www/html/kmls.txt\""
@@ -71,6 +78,15 @@ def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
     command = "echo '" + flyTo + "' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
     print(command)
     os.system(command)
+
+def getCenterOfRegion(region):
+    lon = region.centroid.coords.xy[0][0]
+    lat = region.centroid.coords.xy[1][0]
+    return lat, lon
+
+def flyToRegion(region):
+    center_lat, center_lon = getCenterOfRegion(region)
+    sendFlyToToLG(center_lat, center_lon, 15000, 0, 0, 15000000, 2)
 
 def doRotation(playList, latitude, longitude, altitude, pRange):
     for angle in range(0, 360, 10):
