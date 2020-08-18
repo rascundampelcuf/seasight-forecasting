@@ -5,6 +5,7 @@ from seasight_forecasting import global_vars
 from seasight_forecasting.utils import *
 from seasight_forecasting.ConfigurationFile import *
 from seasight_forecasting.CaseMethods import *
+from seasight_forecasting.Demo import GenerateDemo
 
 def index(request):
     LoadConfigFile()
@@ -32,6 +33,7 @@ def past(request):
     if request.method == 'POST':
         if request.POST.get("Submit") == "Submit":
             cleanVerbose()
+            writeVerbose('Expect several minutes to complete...')
             run_historic(request)
         if request.POST.get("Stop") == "Stop":
             stop_thread()
@@ -42,6 +44,7 @@ def present(request):
     LoadConfigFile()
     if request.method == 'POST':
         cleanVerbose()
+        writeVerbose('Expect several minutes to complete...')
         region = GetRegionFromFile(request.POST.get('region'))
         GenerateRealTimeKML(region)
         sendKmlToLGCommon(global_vars.kml_destination_filename)
@@ -52,6 +55,7 @@ def future(request):
     LoadConfigFile()
     if request.method == 'POST':
         cleanVerbose()
+        writeVerbose('Expect several minutes to complete...')
         region = GetRegionFromFile(request.POST.get('region'))
         GenerateFutureKML(region)
         sendKmlToLGCommon(global_vars.kml_destination_filename)
