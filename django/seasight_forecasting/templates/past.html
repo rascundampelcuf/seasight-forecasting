@@ -29,9 +29,7 @@
                 <a href="/"><img src="{% static 'logos/SF-logo.png' %}" class="logo2"></a>
             </div>
             <div class="head_banner">
-                <div class="crop">
-                    <img src="{% static 'img/marine_temp_vintage.jpg' %}" class="header_img">
-                </div>
+                <img src="{% static 'img/marine_temp_vintage_header.jpg' %}" class="header_img">
             </div>
         </div>
 
@@ -43,6 +41,32 @@
             <div>
                 <form action="{% url 'past' %}" method="POST" name="GenerateKML" onsubmit="return onSubmit();">
                     {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td>Region:</td>
+                            <td><input type="text" id="region" name="region" value="--" readonly="readonly"></td>
+                            <td><span id="regionVal" class="textVal"></span></td>
+                        </tr>
+                        <tr>
+                            <td>From:</td>
+                            <td><input type="date" id="dateFrom" name="dateFrom" min="{{min_date}}" max="{{max_date}}"></td>
+                            <td><span id="dateFromVal" class="textVal"></span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <tr>
+                                    <td><input type="checkbox" id="enableDateTo" name="check"></td>
+                                    <td><span>To:</span></td>
+                                </tr>
+                            </td>
+                            <td><input type="date" id="dateTo" name="dateTo" min="{{min_date}}" max="{{max_date}}" disabled></td>
+                            <td><span id="dateToVal" class="textVal"></span></td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" value="Submit" name="Submit" onclick="return validatePastForm();"></td>
+                            <td><input type="submit" value="Stop" name="Stop"></td>
+                        </tr>
+                    </table>
                     <div>
                         <span>Region: </span>
                         <input type="text" id="region" name="region" value="--" readonly="readonly">

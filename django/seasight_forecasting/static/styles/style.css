@@ -2,6 +2,7 @@
 /* logo */
 .logo {
   width: 8%;
+  padding: 10px;
 }
 
 /* main page images */
@@ -14,6 +15,7 @@
 .case_img {
   width: 350px;
   height: 200px;
+  margin: 10px;
 }
 
 .button {
@@ -46,18 +48,11 @@
 
 .logo2 {
   width: 100%;
+  padding: 10px;
 }
 
 .head_banner {
   width: 92%;
-}
-
-.crop {
-  width: 100%;
-  height: 150px;
-  overflow: hidden;
-  top: 0px;
-  left: 0px;
 }
 
 .header_img {
