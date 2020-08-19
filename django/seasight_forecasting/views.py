@@ -22,6 +22,18 @@ def run_historic(request):
     startSendKMLThread()
     flyToRegion(region)
 
+def run_present(request):
+    region = GetRegionFromFile(request.POST.get('region'))
+    GenerateRealTimeKML(region)
+    sendKmlToLGCommon(global_vars.kml_destination_filename)
+    flyToRegion(region)
+
+def run_future(request):
+    region = GetRegionFromFile(request.POST.get('region'))
+    GenerateFutureKML(region)
+    sendKmlToLGCommon(global_vars.kml_destination_filename)
+    flyToRegion(region)
+
 def stop_thread():
     stopSendKMLThread()
 
@@ -43,23 +55,25 @@ def past(request):
 def present(request):
     LoadConfigFile()
     if request.method == 'POST':
-        cleanVerbose()
-        writeVerbose('Expect several minutes to complete...')
-        region = GetRegionFromFile(request.POST.get('region'))
-        GenerateRealTimeKML(region)
-        sendKmlToLGCommon(global_vars.kml_destination_filename)
-        flyToRegion(region)
+        if request.POST.get("Submit") == "Submit":
+            cleanVerbose()
+            writeVerbose('Expect several minutes to complete...')
+            run_present(request)
+        if request.POST.get("Stop") == "Stop":
+            stop_thread()
+
     return render(request, 'present.html', {})
 
 def future(request):
     LoadConfigFile()
     if request.method == 'POST':
-        cleanVerbose()
-        writeVerbose('Expect several minutes to complete...')
-        region = GetRegionFromFile(request.POST.get('region'))
-        GenerateFutureKML(region)
-        sendKmlToLGCommon(global_vars.kml_destination_filename)
-        flyToRegion(region)
+        if request.POST.get("Submit") == "Submit":
+            cleanVerbose()
+            writeVerbose('Expect several minutes to complete...')
+            run_future(request)
+        if request.POST.get("Stop") == "Stop":
+            stop_thread()
+
     return render(request, 'future.html', {})
 
 def demo(request):

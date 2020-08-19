@@ -26,3 +26,4 @@ logs = False
 show_verbose = False
 
 thread = False
+rotate = False
