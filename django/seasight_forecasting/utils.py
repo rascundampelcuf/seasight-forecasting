@@ -1,10 +1,20 @@
 
 import itertools
 import os
-#import simplekml
 from seasight_forecasting import global_vars
 from threading import Thread
 from time import sleep, time
+
+def blankKML(id):
+    string = "\"echo '<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?> \n" + \
+        "<kml xmlns=\\\"http://www.opengis.net/kml/2.2\\\"" + \
+        " xmlns:gx=\\\"http://www.google.com/kml/ext/2.2\\\"" + \
+        " xmlns:kml=\\\"http://www.opengis.net/kml/2.2\\\" " + \
+        " xmlns:atom=\\\"http://www.w3.org/2005/Atom\\\">\n" + \
+        " <Document id=\\\"slave_" + id + "\\\"> \n" + \
+        " </Document>\n" + \
+        " </kml>\n' > /var/www/html/kml/slave_" + id + ".kml\""
+    return string
 
 def sendKmlToLG(main, slave):
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
@@ -13,9 +23,10 @@ def sendKmlToLG(main, slave):
     print(command)
     os.system(command)
 
+
+    string = blankKML(str(global_vars.screen_for_colorbar))
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " \"echo "  \
-        + " > /var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml\""
+        + " " + string
     print(command)
     os.system(command)
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
@@ -61,9 +72,27 @@ def startSendKMLThread():
 
 def stopSendKMLThread():
     global_vars.thread = False
+    global_vars.rotate = False
 
 def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
     flyTo = "flytoview=<LookAt>" \
+            + "<longitude>" + str(lon) + "</longitude>" \
+            + "<latitude>" + str(lat) + "</latitude>" \
+            + "<altitude>" + str(altitude) + "</altitude>" \
+            + "<heading>" + str(heading) + "</heading>" \
+            + "<tilt>" + str(tilt) + "</tilt>" \
+            + "<range>" + str(pRange) + "</range>" \
+            + "<altitudeMode>relativeToGround</altitudeMode>" \
+            + "<gx:altitudeMode>relativeToGround</gx:altitudeMode>" \
+            + "<gx:duration>" + str(duration) + "</gx:duration>" \
+            + "</LookAt>"
+
+    command = "echo '" + flyTo + "' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    print(command)
+    os.system(command)
+
+def sendRotation(lat, lon, altitude, heading, tilt, pRange, duration):
+    flyTo = "flytoview=<LookAt><gx:flyToMode>smooth</gx:flyToMode>" \
             + "<longitude>" + str(lon) + "</longitude>" \
             + "<latitude>" + str(lat) + "</latitude>" \
             + "<altitude>" + str(altitude) + "</altitude>" \
@@ -84,23 +113,15 @@ def getCenterOfRegion(region):
     lat = region.centroid.coords.xy[1][0]
     return lat, lon
 
+def doRotation(latitude, longitude, altitude, pRange):
+    for angle in range(0, 360, 10):
+        sendRotation(latitude, longitude, altitude, angle, 5, pRange, 1)
+
 def flyToRegion(region):
     center_lat, center_lon = getCenterOfRegion(region)
-    sendFlyToToLG(center_lat, center_lon, 15000, 0, 0, 15000000, 2)
-
-def doRotation(playList, latitude, longitude, altitude, pRange):
-    for angle in range(0, 360, 10):
-        flyto = playList.newgxflyto(gxduration=1.0)
-        #flyto.gxflytomode = simplekml.GxFlyToMode.smooth
-        #flyto.altitudemode = simplekml.AltitudeMode.relativetoground
-
-        #flyto.lookat.gxaltitudemode = simplekml.GxAltitudeMode.relativetoseafloor
-        flyto.lookat.longitude = float(longitude)
-        flyto.lookat.latitude = float(latitude)
-        flyto.lookat.altitude = altitude
-        flyto.lookat.heading = angle
-        flyto.lookat.tilt = 77
-        flyto.lookat.range = pRange
+    sendFlyToToLG(center_lat, center_lon, 15000, 0, 0, 6000000, 2)
+    sleep(10)
+    doRotation(center_lat, center_lon, 15000, 6000000)
 
 def cleanVerbose():
     fName = 'seasight_forecasting/static/scripts/verbose.txt'
@@ -126,29 +147,13 @@ def cleanMainKML():
     os.system(command)
 
 def cleanSecundaryKML():
-    string = "\"echo '<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?> \n" + \
-        "<kml xmlns=\\\"http://www.opengis.net/kml/2.2\\\"" + \
-        " xmlns:gx=\\\"http://www.google.com/kml/ext/2.2\\\"" + \
-        " xmlns:kml=\\\"http://www.opengis.net/kml/2.2\\\" " + \
-        " xmlns:atom=\\\"http://www.w3.org/2005/Atom\\\">\n" + \
-        " <Document id=\\\"slave_" + str(global_vars.screen_for_colorbar) + "\\\"> \n" + \
-        " </Document>\n" + \
-        " </kml>\n' > /var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml\""
-
+    string = blankKML(str(global_vars.screen_for_colorbar))
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
         + " " + string
     os.system(command)
 
 def cleanLogoKML():
-    string = "\"echo '<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?> \n" + \
-        "<kml xmlns=\\\"http://www.opengis.net/kml/2.2\\\"" + \
-        " xmlns:gx=\\\"http://www.google.com/kml/ext/2.2\\\"" + \
-        " xmlns:kml=\\\"http://www.opengis.net/kml/2.2\\\" " + \
-        " xmlns:atom=\\\"http://www.w3.org/2005/Atom\\\">\n" + \
-        " <Document id=\\\"slave_" + str(global_vars.screen_for_logos) + "\\\"> \n" + \
-        " </Document>\n" + \
-        " </kml>\n' > /var/www/html/kml/slave_" + str(global_vars.screen_for_logos) + ".kml\""
-
+    string = blankKML(str(global_vars.screen_for_logos))
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
         + " " + string
     os.system(command)
