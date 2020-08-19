@@ -66,12 +66,18 @@
 
 2. Ensure you are inside `Seasight-Forecasting/django`
 
-3. Run the application
+3. The first time of the following steps is required to give permissions to the files.
+   ```
+   chmod +x startDjango.sh
+   chmod +x setMasterKmlTxt.sh
+   ```
+
+4. Run the application
     ```
     ./startDjango.sh
     ```
 
-4. Run the script
+5. Run the script
    ```
    ./setMasterKmlTxt.sh
    ```
