@@ -1,11 +1,17 @@
 
 import os
 from seasight_forecasting import global_vars
+from seasight_forecasting.utils import *
 from time import sleep, time
 
 def sendKmlToLG(main, slave):
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
-        + "Seasight-Forecasting/django/" + main + " " + global_vars.lg_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
+        + "Seasight-Forecasting/django/" + main + "SST_regions.kml " + global_vars.lg_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
+    print(command)
+    os.system(command)
+
+    command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
+        + "Seasight-Forecasting/django/" + main + "orbit.kml " + global_vars.lg_IP + ":/var/www/html/SF/orbit.kml"
     print(command)
     os.system(command)
 
@@ -21,8 +27,11 @@ def sendKmlToLG(main, slave):
     os.system(command)
 
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " \"echo http://" + global_vars.lg_IP + ":81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) \
-        + " > /var/www/html/kmls.txt\""
+        + " \"echo http://" + global_vars.lg_IP + ":81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) + " > /var/www/html/kmls.txt\""
+    print(command)
+    os.system(command)
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+        + " \"echo http://" + global_vars.lg_IP + ":81/SF/orbit.kml?id=" + str(int(time()*100)) + " >> /var/www/html/kmls.txt\""
     print(command)
     os.system(command)
 
@@ -43,40 +52,193 @@ def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
     print(command)
     os.system(command)
 
+def createRotation(lat, lon, alt, tilt, fovy, range1):
+    xml = '<?xml version="1.0" encoding="UTF-8"?>'
+    xml += '\n'+'<kml xmlns="http://www.opengis.net/kml/2.2"'
+    xml += '\n'+'xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">'
+    xml += '\n'+'<gx:Tour>'
+    xml += '\n\t'+'<name>Orbit</name>'
+    xml += '\n\t'+'<gx:Playlist>'
+    for i in range(0,360,10):
+        xml += '\n\t\t'+'<gx:FlyTo>'
+        xml += '\n\t\t\t'+'<gx:duration>1.2</gx:duration>'
+        xml += '\n\t\t\t'+'<gx:flyToMode>smooth</gx:flyToMode>'
+        xml += '\n\t\t\t'+'<LookAt>'
+        xml += '\n\t\t\t\t'+'<longitude>'+str(lon)+'</longitude>'
+        xml += '\n\t\t\t\t'+'<latitude>'+str(lat)+'</latitude>'
+        xml += '\n\t\t\t\t'+'<altitude>'+str(alt)+'</altitude>'
+        xml += '\n\t\t\t\t'+'<heading>'+str(i)+'</heading>'
+        xml += '\n\t\t\t\t'+'<tilt>'+str(tilt)+'</tilt>'
+        xml += '\n\t\t\t\t'+'<gx:fovy>'+str(fovy)+'</gx:fovy>'
+        xml += '\n\t\t\t\t'+'<range>'+str(range1)+'</range>'
+        xml += '\n\t\t\t\t'+'<gx:altitudeMode>absolute</gx:altitudeMode>'
+        xml += '\n\t\t\t'+'</LookAt>'
+        xml += '\n\t\t'+'</gx:FlyTo>'
+
+    xml += '\n\t'+'</gx:Playlist>'
+    xml += '\n'+'</gx:Tour>'
+    xml += '\n'+'</kml>'
+    return xml
+
+def generateOrbitFile(content, path):
+    with open(path, 'w') as file1:
+        file1.write(content)
+
 def LoadKML(path):
-    sendKmlToLG(path + 'SST_regions.kml', path + 'slave.kml')
+    sendKmlToLG(path, path + 'slave.kml')
 
 def FlyTo(center_lat, center_lon):
-    sendFlyToToLG(center_lat, center_lon, 15000, 0, 0, 6000000, 2)
+    sendFlyToToLG(center_lat, center_lon, global_vars.altitude, 0, 0, global_vars.pRange, 3)
+
+def Rotate(center_lat, center_lon, path):
+    content = createRotation(center_lat, center_lon, global_vars.altitude, 5, 35, global_vars.pRange)
+    path = path + 'orbit.kml'
+    generateOrbitFile(content, path)
+
+def startRotation():
+    command = "echo 'playtour=Orbit' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    os.system(command)
+
+def stopRotation():
+    command = "echo 'exittour=true' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    os.system(command)
 
 def SouthAtlantic():
-    LoadKML(global_vars.demo_files_path + 'South_Atlantic/')
-    FlyTo(-44.033173405198575, -18.55412927249652)
-    sleep(10)
+    path = global_vars.demo_files_path + 'South_Atlantic/'
+    coords = [-44.033173405198575, -18.55412927249652]
+    Rotate(coords[0], coords[1], path)
+    LoadKML(path)
+    writeVerbose('Start region filtering...')
+    sleep(1)
+    writeVerbose('Data filtering DONE')
+    writeVerbose('Start Prediction...')
+    sleep(1)
+    writeVerbose('Prediction DONE!')
+    writeVerbose('Start Clustering...')
+    sleep(1)
+    writeVerbose('Clustering DONE!')
+    sleep(1)
+    writeVerbose('Created KML files')
+    writeVerbose('Flying to the position...')
+    FlyTo(coords[0], coords[1])
+    sleep(3)
+    writeVerbose('Rotating...')
+    startRotation()
+    sleep(30)
 
 def Indian():
-    LoadKML(global_vars.demo_files_path + 'Indian/')
-    FlyTo(-20.55819005127296, 71.46322969298124)
-    sleep(10)
+    path = global_vars.demo_files_path + 'Indian/'
+    coords = [-20.55819005127296, 71.46322969298124]
+    Rotate(coords[0], coords[1], path)
+    LoadKML(path)
+    writeVerbose('Start region filtering...')
+    sleep(1)
+    writeVerbose('Data filtering DONE')
+    writeVerbose('Start Prediction...')
+    sleep(1)
+    writeVerbose('Prediction DONE!')
+    writeVerbose('Start Clustering...')
+    sleep(1)
+    writeVerbose('Clustering DONE!')
+    sleep(1)
+    writeVerbose('Created KML files')
+    writeVerbose('Flying to the position...')
+    FlyTo(coords[0], coords[1])
+    sleep(3)
+    writeVerbose('Rotating...')
+    startRotation()
+    sleep(30)
 
 def WestPacific():
-    LoadKML(global_vars.demo_files_path + 'West_Pacific/')
-    FlyTo(-3.6055350414132112, 148.72609606570853)
-    sleep(10)
+    path = global_vars.demo_files_path + 'West_Pacific/'
+    coords = [-3.6055350414132112, 148.72609606570853]
+    Rotate(coords[0], coords[1], path)
+    LoadKML(path)
+    writeVerbose('Start region filtering...')
+    sleep(1)
+    writeVerbose('Data filtering DONE')
+    writeVerbose('Start Prediction...')
+    sleep(1)
+    writeVerbose('Prediction DONE!')
+    writeVerbose('Start Clustering...')
+    sleep(1)
+    writeVerbose('Clustering DONE!')
+    sleep(1)
+    writeVerbose('Created KML files')
+    writeVerbose('Flying to the position...')
+    FlyTo(coords[0], coords[1])
+    sleep(3)
+    writeVerbose('Rotating...')
+    startRotation()
+    sleep(30)
 
 def EastPacific():
-    LoadKML(global_vars.demo_files_path + 'East_Pacific/')
-    FlyTo(-14.22202896516345, -129.23682168130628)
-    sleep(10)
+    path = global_vars.demo_files_path + 'East_Pacific/'
+    coords = [-14.22202896516345, -129.23682168130628]
+    Rotate(coords[0], coords[1], path)
+    LoadKML(path)
+    writeVerbose('Start region filtering...')
+    sleep(1)
+    writeVerbose('Data filtering DONE')
+    writeVerbose('Start Prediction...')
+    sleep(1)
+    writeVerbose('Prediction DONE!')
+    writeVerbose('Start Clustering...')
+    sleep(1)
+    writeVerbose('Clustering DONE!')
+    sleep(1)
+    writeVerbose('Created KML files')
+    writeVerbose('Flying to the position...')
+    FlyTo(coords[0], coords[1])
+    sleep(3)
+    writeVerbose('Rotating...')
+    startRotation()
+    sleep(30)
 
 def NorthAtlantic():
-    LoadKML(global_vars.demo_files_path + 'North_Atlantic/')
-    FlyTo(43.090963600753945, -25.84386342158867)
-    sleep(10)
+    path = global_vars.demo_files_path + 'North_Atlantic/'
+    coords = [43.090963600753945, -25.84386342158867]
+    Rotate(coords[0], coords[1], path)
+    LoadKML(path)
+    writeVerbose('Start region filtering...')
+    sleep(1)
+    writeVerbose('Data filtering DONE')
+    writeVerbose('Start Prediction...')
+    sleep(1)
+    writeVerbose('Prediction DONE!')
+    writeVerbose('Start Clustering...')
+    sleep(1)
+    writeVerbose('Clustering DONE!')
+    sleep(1)
+    writeVerbose('Created KML files')
+    writeVerbose('Flying to the position...')
+    FlyTo(coords[0], coords[1])
+    sleep(3)
+    writeVerbose('Rotating...')
+    startRotation()
+    sleep(30)
+
+def demo_threaded_function():
+    SouthAtlantic()
+    if global_vars.thread == False: return
+    Indian()
+    if global_vars.thread == False: return
+    WestPacific()
+    if global_vars.thread == False: return
+    EastPacific()
+    if global_vars.thread == False: return
+    NorthAtlantic()
+    if global_vars.thread == False: return
+
+def startDemoThread():
+    global_vars.thread = True
+    thread = Thread(target = demo_threaded_function)
+    thread.name = 'Demo'
+    thread.start()
 
 def GenerateDemo():
-    SouthAtlantic()
-    Indian()
-    WestPacific()
-    EastPacific()
-    NorthAtlantic()
+    startDemoThread()
+
+def StopDemo():
+    global_vars.thread = False
+    stopRotation()
