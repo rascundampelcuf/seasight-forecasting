@@ -79,7 +79,11 @@ def future(request):
 def demo(request):
     LoadConfigFile()
     if request.method == 'POST':
-        GenerateDemo()
+        if request.POST.get("Start") == "Start":
+            cleanVerbose()
+            GenerateDemo()
+        if request.POST.get("Stop") == "Stop":
+            StopDemo()
     return render(request, 'demo.html', {})
 
 def clean_KML(request):
