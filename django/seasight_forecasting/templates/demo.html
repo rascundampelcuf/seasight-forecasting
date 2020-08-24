@@ -5,7 +5,31 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="{% static 'scripts/canvas.js' %}"></script>
+    <script>
+        function onSubmit() {
+            enableSpinner();
+            return true;
+        }
+
+        function checkVerbose() {
+            jQuery.get("../static/scripts/verbose.txt",function(data){$('#verbose').html(data);});
+            setTimeout(function(){checkVerbose() },1000);
+        }
+
+        function enableSpinner() {
+            $('#spinner').show();
+        }
+
+        function disableSpinner() {
+            $('#spinner').hide();
+        }
+
+        $(document).ready(function() {
+            disableSpinner();
+        });
+
+        checkVerbose();
+    </script>
     <head>
         <title>Seasight Forecasting App</title>
     </head>
@@ -28,10 +52,10 @@
         </div>
         <div class="container">
             <div>
-                <form action="{% url 'demo' %}" method="POST" name="StartDemo">
+                <form action="{% url 'demo' %}" method="POST" name="StartDemo" onsubmit="return onSubmit();">
                     {% csrf_token %}
-                    <input type="submit" value="Start" name="Start" class="button" onclick="return enableButton();">
-                    <input type="submit" value="Stop" name="Stop" id="stopButton" class="disbutton" onclick="return disableButton();" disabled>
+                    <input type="submit" value="Start" name="Start" class="button">
+                    <input type="submit" value="Stop" name="Stop" id="stopButton" class="button">
                 </form>
             </div>
         </div>
