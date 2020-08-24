@@ -125,18 +125,6 @@ function disableSpinner() {
     $('#spinner').hide();
 }
 
-function enableButton() {
-    $('#stopButton').removeClass("disbutton");
-    $('#stopButton').addClass("button");
-    $('#stopButton').attr("disabled", false);
-}
-
-function disableButton() {
-    $('#stopButton').removeClass("button");
-    $('#stopButton').addClass("disbutton");
-    $('#stopButton').attr("disabled", true);
-}
-
 $(document).ready(function() {
     disableSpinner();
 });
