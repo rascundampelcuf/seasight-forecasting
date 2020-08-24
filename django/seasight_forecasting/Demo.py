@@ -4,7 +4,7 @@ from seasight_forecasting import global_vars
 from seasight_forecasting.utils import *
 from time import sleep, time
 
-def sendKmlToLG(main, slave):
+def sendKmlToLGDemo(main, slave):
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
         + "Seasight-Forecasting/django/" + main + "SST_regions.kml " + global_vars.lg_IP + ":/var/www/html/SF/" + global_vars.kml_destination_filename
     print(command)
@@ -35,7 +35,7 @@ def sendKmlToLG(main, slave):
     print(command)
     os.system(command)
 
-def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
+def sendFlyToToLGDemo(lat, lon, altitude, heading, tilt, pRange, duration):
     flyTo = "flytoview=<LookAt>" \
             + "<longitude>" + str(lon) + "</longitude>" \
             + "<latitude>" + str(lat) + "</latitude>" \
@@ -52,7 +52,7 @@ def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
     print(command)
     os.system(command)
 
-def createRotation(lat, lon, alt, tilt, fovy, range1):
+def createRotationDemo(lat, lon, alt, tilt, fovy, range1):
     xml = '<?xml version="1.0" encoding="UTF-8"?>'
     xml += '\n'+'<kml xmlns="http://www.opengis.net/kml/2.2"'
     xml += '\n'+'xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">'
@@ -80,20 +80,20 @@ def createRotation(lat, lon, alt, tilt, fovy, range1):
     xml += '\n'+'</kml>'
     return xml
 
-def generateOrbitFile(content, path):
+def generateOrbitFileDemo(content, path):
     with open(path, 'w') as file1:
         file1.write(content)
 
 def LoadKML(path):
-    sendKmlToLG(path, path + 'slave.kml')
+    sendKmlToLGDemo(path, path + 'slave.kml')
 
 def FlyTo(center_lat, center_lon):
-    sendFlyToToLG(center_lat, center_lon, global_vars.altitude, 0, 0, global_vars.pRange, 3)
+    sendFlyToToLGDemo(center_lat, center_lon, global_vars.altitude, 0, 0, global_vars.pRange, 3)
 
 def Rotate(center_lat, center_lon, path):
-    content = createRotation(center_lat, center_lon, global_vars.altitude, 5, 35, global_vars.pRange)
+    content = createRotationDemo(center_lat, center_lon, global_vars.altitude, 5, 35, global_vars.pRange)
     path = path + 'orbit.kml'
-    generateOrbitFile(content, path)
+    generateOrbitFileDemo(content, path)
 
 def startRotation():
     command = "echo 'playtour=Orbit' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
