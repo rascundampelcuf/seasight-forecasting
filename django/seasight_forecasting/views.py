@@ -5,11 +5,12 @@ from seasight_forecasting import global_vars
 from seasight_forecasting.utils import *
 from seasight_forecasting.ConfigurationFile import *
 from seasight_forecasting.CaseMethods import *
-from seasight_forecasting.Demo import GenerateDemo
+from seasight_forecasting.Demo import *
 
 def index(request):
     LoadConfigFile()
     cleanVerbose()
+    resetView()
     return render(request, 'index.html', {})
 
 def run_historic(request):

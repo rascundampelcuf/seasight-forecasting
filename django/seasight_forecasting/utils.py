@@ -23,7 +23,6 @@ def sendKmlToLG(main, slave):
     print(command)
     os.system(command)
 
-
     string = blankKML(str(global_vars.screen_for_colorbar))
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
         + " " + string
@@ -72,7 +71,7 @@ def startSendKMLThread():
 
 def stopSendKMLThread():
     global_vars.thread = False
-    global_vars.rotate = False
+    stopOrbit()
 
 def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
     flyTo = "flytoview=<LookAt>" \
@@ -91,21 +90,50 @@ def sendFlyToToLG(lat, lon, altitude, heading, tilt, pRange, duration):
     print(command)
     os.system(command)
 
-def sendRotation(lat, lon, altitude, heading, tilt, pRange, duration):
-    flyTo = "flytoview=<LookAt><gx:flyToMode>smooth</gx:flyToMode>" \
-            + "<longitude>" + str(lon) + "</longitude>" \
-            + "<latitude>" + str(lat) + "</latitude>" \
-            + "<altitude>" + str(altitude) + "</altitude>" \
-            + "<heading>" + str(heading) + "</heading>" \
-            + "<tilt>" + str(tilt) + "</tilt>" \
-            + "<range>" + str(pRange) + "</range>" \
-            + "<altitudeMode>relativeToGround</altitudeMode>" \
-            + "<gx:altitudeMode>relativeToGround</gx:altitudeMode>" \
-            + "<gx:duration>" + str(duration) + "</gx:duration>" \
-            + "</LookAt>"
+def createRotation(lat, lon, alt, tilt, range1):
+    xml = '<?xml version="1.0" encoding="UTF-8"?>'
+    xml += '\n'+'<kml xmlns="http://www.opengis.net/kml/2.2"'
+    xml += '\n'+'xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">'
+    xml += '\n'+'<gx:Tour>'
+    xml += '\n\t'+'<name>Orbit</name>'
+    xml += '\n\t'+'<gx:Playlist>'
+    for i in range(0,1440,10):
+        xml += '\n\t\t'+'<gx:FlyTo>'
+        xml += '\n\t\t\t'+'<gx:duration>1.2</gx:duration>'
+        xml += '\n\t\t\t'+'<gx:flyToMode>smooth</gx:flyToMode>'
+        xml += '\n\t\t\t'+'<LookAt>'
+        xml += '\n\t\t\t\t'+'<longitude>'+str(lon)+'</longitude>'
+        xml += '\n\t\t\t\t'+'<latitude>'+str(lat)+'</latitude>'
+        xml += '\n\t\t\t\t'+'<altitude>'+str(alt)+'</altitude>'
+        xml += '\n\t\t\t\t'+'<heading>'+str(i)+'</heading>'
+        xml += '\n\t\t\t\t'+'<tilt>'+str(tilt)+'</tilt>'
+        xml += '\n\t\t\t\t'+'<gx:fovy>35</gx:fovy>'
+        xml += '\n\t\t\t\t'+'<range>'+str(range1)+'</range>'
+        xml += '\n\t\t\t\t'+'<gx:altitudeMode>absolute</gx:altitudeMode>'
+        xml += '\n\t\t\t'+'</LookAt>'
+        xml += '\n\t\t'+'</gx:FlyTo>'
 
-    command = "echo '" + flyTo + "' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    xml += '\n\t'+'</gx:Playlist>'
+    xml += '\n'+'</gx:Tour>'
+    xml += '\n'+'</kml>'
+    return xml
+
+def generateOrbitFile(content, path):
+    with open(path, 'w') as file1:
+        file1.write(content)
+
+def sendOrbitToLG():
+    command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
+        + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + "orbit.kml " + global_vars.lg_IP + ":/var/www/html/SF/orbit.kml"
     print(command)
+    os.system(command)
+
+def startOrbit():
+    command = "echo 'playtour=Orbit' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    os.system(command)
+
+def stopOrbit():
+    command = "echo 'exittour=true' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
     os.system(command)
 
 def getCenterOfRegion(region):
@@ -114,8 +142,10 @@ def getCenterOfRegion(region):
     return lat, lon
 
 def doRotation(latitude, longitude, altitude, pRange):
-    for angle in range(0, 360, 10):
-        sendRotation(latitude, longitude, altitude, angle, 5, pRange, 1)
+    kml = createRotation(latitude, longitude, altitude, 5, pRange)
+    generateOrbitFile(kml, global_vars.kml_destination_path + '/orbit.kml')
+    sendOrbitToLG()
+    startOrbit()
 
 def flyToRegion(region):
     center_lat, center_lon = getCenterOfRegion(region)
@@ -172,3 +202,6 @@ def cleanAllKMLFiles():
     cleanSecundaryKML()
     cleanLogoKML()
     removeSFFolder()
+
+def resetView():
+    sendFlyToToLG(-3.6, 40.77, 0, 0, 5, 10000000, 1.2)
