@@ -15,6 +15,9 @@ def sendKmlToLGDemo(main, slave):
     print(command)
     os.system(command)
 
+    command = "sshpass -p {} scp $HOME/{}Seasight-Forecasting/django/seasight_forecasting/static/kml/DEMO/colorbar.png {}:/var/www/html/SF/colorbar.png".format(global_vars.lg_pass, global_vars.project_location, global_vars.lg_IP)
+    print(command)
+    os.system(command)
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
         + " \"echo "  \
         + " > /var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml\""
@@ -96,18 +99,17 @@ def Rotate(center_lat, center_lon, path):
     generateOrbitFileDemo(content, path)
 
 def startRotation():
-    command = "echo 'playtour=Orbit' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " \'echo \'playtour=Orbit\' > /tmp/query.txt\'"
     os.system(command)
 
 def stopRotation():
-    command = "echo 'exittour=true' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " \'echo \'exittour=true\' > /tmp/query.txt\'"
     os.system(command)
 
 def SouthAtlantic():
     path = global_vars.demo_files_path + 'South_Atlantic/'
     coords = [-44.033173405198575, -18.55412927249652]
     Rotate(coords[0], coords[1], path)
-    LoadKML(path)
     writeVerbose('Start region filtering...')
     sleep(1)
     writeVerbose('Data filtering DONE')
@@ -119,6 +121,7 @@ def SouthAtlantic():
     writeVerbose('Clustering DONE!')
     sleep(1)
     writeVerbose('Created KML files')
+    LoadKML(path)
     writeVerbose('Flying to the position...')
     FlyTo(coords[0], coords[1])
     sleep(3)
@@ -130,7 +133,6 @@ def Indian():
     path = global_vars.demo_files_path + 'Indian/'
     coords = [-20.55819005127296, 71.46322969298124]
     Rotate(coords[0], coords[1], path)
-    LoadKML(path)
     writeVerbose('Start region filtering...')
     sleep(1)
     writeVerbose('Data filtering DONE')
@@ -142,6 +144,7 @@ def Indian():
     writeVerbose('Clustering DONE!')
     sleep(1)
     writeVerbose('Created KML files')
+    LoadKML(path)
     writeVerbose('Flying to the position...')
     FlyTo(coords[0], coords[1])
     sleep(3)
@@ -153,7 +156,6 @@ def WestPacific():
     path = global_vars.demo_files_path + 'West_Pacific/'
     coords = [-3.6055350414132112, 148.72609606570853]
     Rotate(coords[0], coords[1], path)
-    LoadKML(path)
     writeVerbose('Start region filtering...')
     sleep(1)
     writeVerbose('Data filtering DONE')
@@ -165,6 +167,7 @@ def WestPacific():
     writeVerbose('Clustering DONE!')
     sleep(1)
     writeVerbose('Created KML files')
+    LoadKML(path)
     writeVerbose('Flying to the position...')
     FlyTo(coords[0], coords[1])
     sleep(3)
@@ -176,7 +179,6 @@ def EastPacific():
     path = global_vars.demo_files_path + 'East_Pacific/'
     coords = [-14.22202896516345, -129.23682168130628]
     Rotate(coords[0], coords[1], path)
-    LoadKML(path)
     writeVerbose('Start region filtering...')
     sleep(1)
     writeVerbose('Data filtering DONE')
@@ -188,6 +190,7 @@ def EastPacific():
     writeVerbose('Clustering DONE!')
     sleep(1)
     writeVerbose('Created KML files')
+    LoadKML(path)
     writeVerbose('Flying to the position...')
     FlyTo(coords[0], coords[1])
     sleep(3)
@@ -199,7 +202,6 @@ def NorthAtlantic():
     path = global_vars.demo_files_path + 'North_Atlantic/'
     coords = [43.090963600753945, -25.84386342158867]
     Rotate(coords[0], coords[1], path)
-    LoadKML(path)
     writeVerbose('Start region filtering...')
     sleep(1)
     writeVerbose('Data filtering DONE')
@@ -211,6 +213,7 @@ def NorthAtlantic():
     writeVerbose('Clustering DONE!')
     sleep(1)
     writeVerbose('Created KML files')
+    LoadKML(path)
     writeVerbose('Flying to the position...')
     FlyTo(coords[0], coords[1])
     sleep(3)
@@ -236,7 +239,13 @@ def startDemoThread():
     thread.name = 'Demo'
     thread.start()
 
+def cleanVerboseDemo():
+    fName = 'seasight_forecasting/static/scripts/verbose.txt'
+    with open(fName, "w"):
+        pass
+
 def GenerateDemo():
+    cleanVerboseDemo()
     startDemoThread()
 
 def StopDemo():
