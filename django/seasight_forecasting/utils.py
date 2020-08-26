@@ -189,16 +189,11 @@ def cleanMainKML():
     os.system(command)
 
 def cleanSecundaryKML():
-    string = blankKML(str(global_vars.screen_for_colorbar))
-    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " " + string
-    os.system(command)
-
-def cleanLogoKML():
-    string = blankKML(str(global_vars.screen_for_logos))
-    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " " + string
-    os.system(command)
+    for i in range(2,6):
+        string = blankKML(str(i))
+        command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+            + " " + string
+        os.system(command)
 
 def removeSFFolder():
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
@@ -208,17 +203,39 @@ def removeSFFolder():
 def cleanKMLFiles():
     cleanVerbose()
     cleanMainKML()
-    for i in range(2,6):
-        string = blankKML(str(i))
-        command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-            + " " + string
-        os.system(command)
+    cleanSecundaryKML()
+
 
 def cleanAllKMLFiles():
     cleanMainKML()
     cleanSecundaryKML()
-    cleanLogoKML()
     removeSFFolder()
+
+def setLogo():
+    kml = '<kml xmlns=\\\"http://www.opengis.net/kml/2.2\\\" xmlns:atom=\\\"http://www.w3.org/2005/Atom\\\" xmlns:gx=\\\"http://www.google.com/kml/ext/2.2\\\">'
+    kml += '\n ' + '<Document>'
+    kml += '\n  ' + '<Folder>'
+    kml += '\n   ' + '<name>Logos</name>'
+    kml += '\n   ' + '<ScreenOverlay>'
+    kml += '\n    ' + '<name>Logo</name>'
+    kml += '\n    ' + '<Icon>'
+    kml += '\n     ' + '<href>http://lg1:81/SF/Logos.png</href>'.format(global_vars.server_IP)
+    kml += '\n    ' + '</Icon>'
+    kml += '\n    ' + '<overlayXY x=\\\"0\\\" y=\\\"1\\\" xunits=\\\"fraction\\\" yunits=\\\"fraction\\\"/>'
+    kml += '\n    ' + '<screenXY x=\\\"0.02\\\" y=\\\"0.98\\\" xunits=\\\"fraction\\\" yunits=\\\"fraction\\\"/>'
+    kml += '\n    ' + '<rotationXY x=\\\"0\\\" y=\\\"0\\\" xunits=\\\"fraction\\\" yunits=\\\"fraction\\\"/>'
+    kml += '\n    ' + '<size x=\\\"0.65\\\" y=\\\"0.2\\\" xunits=\\\"fraction\\\" yunits=\\\"fraction\\\"/>'
+    kml += '\n   ' + '</ScreenOverlay>'
+    kml += '\n  ' + '</Folder>'
+    kml += '\n ' + '</Document>'
+    kml += '\n' + '</kml>'
+
+    logos_file_target = '/var/www/html/kml/slave_{}.kml'.format(global_vars.screen_for_logos)
+
+    command = "sshpass -p {} ssh {} echo \"'{}' > {}\"".format(global_vars.lg_pass, global_vars.lg_IP, kml, logos_file_target)
+    print(command)
+    os.system(command)
 
 def resetView():
     sendFlyToToLG(40.77, -3.6, 0, 0, 5, 10000000, 1.2)
+    setLogo()
