@@ -23,6 +23,9 @@ def sendKmlToLG(main, slave):
     print(command)
     os.system(command)
 
+    command = "sshpass -p {} scp $HOME/{}Seasight-Forecasting/django/seasight_forecasting/static/img/colorbar.png {}:/var/www/html/SF/colorbar.png".format(global_vars.lg_pass, global_vars.project_location, global_vars.lg_IP)
+    print(command)
+    os.system(command)
     string = blankKML(str(global_vars.screen_for_colorbar))
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
         + " " + string
@@ -34,9 +37,9 @@ def sendKmlToLG(main, slave):
     print(command)
     os.system(command)
 
+    msg = "http://" + global_vars.lg_IP + ":81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100))
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " \"echo http://" + global_vars.lg_IP + ":81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100)) \
-        + " > /var/www/html/kmls.txt\""
+        + " \"sed -i \"1s/.*/" + msg + "/var/www/html/kmls.txt\""
     print(command)
     os.system(command)
 
@@ -128,12 +131,20 @@ def sendOrbitToLG():
     print(command)
     os.system(command)
 
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+        + " \"echo http://" + global_vars.lg_IP + ":81/SF/orbit.kml?id=" + str(int(time()*100)) \
+        + " >> /var/www/html/kmls.txt\""
+    print(command)
+    os.system(command)
+
 def startOrbit():
-    command = "echo 'playtour=Orbit' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " \'echo \'playtour=Orbit\' > /tmp/query.txt\'"
+    print(command)
     os.system(command)
 
 def stopOrbit():
-    command = "echo 'exittour=true' | sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " 'cat - > /tmp/query.txt'"
+    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP + " \'echo \'exittour=true\' > /tmp/query.txt\'"
+    print(command)
     os.system(command)
 
 def getCenterOfRegion(region):
@@ -145,12 +156,13 @@ def doRotation(latitude, longitude, altitude, pRange):
     kml = createRotation(latitude, longitude, altitude, 5, pRange)
     generateOrbitFile(kml, global_vars.kml_destination_path + '/orbit.kml')
     sendOrbitToLG()
+    sleep(1)
     startOrbit()
 
 def flyToRegion(region):
     center_lat, center_lon = getCenterOfRegion(region)
     sendFlyToToLG(center_lat, center_lon, 15000, 0, 0, 6000000, 2)
-    sleep(10)
+    sleep(4)
     doRotation(center_lat, center_lon, 15000, 6000000)
 
 def cleanVerbose():
@@ -194,8 +206,13 @@ def removeSFFolder():
     os.system(command)
 
 def cleanKMLFiles():
+    cleanVerbose()
     cleanMainKML()
-    cleanSecundaryKML()
+    for i in range(2,6):
+        string = blankKML(str(i))
+        command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
+            + " " + string
+        os.system(command)
 
 def cleanAllKMLFiles():
     cleanMainKML()
@@ -204,4 +221,4 @@ def cleanAllKMLFiles():
     removeSFFolder()
 
 def resetView():
-    sendFlyToToLG(-3.6, 40.77, 0, 0, 5, 10000000, 1.2)
+    sendFlyToToLG(40.77, -3.6, 0, 0, 5, 10000000, 1.2)
