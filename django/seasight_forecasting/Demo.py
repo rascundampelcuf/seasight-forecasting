@@ -222,16 +222,17 @@ def NorthAtlantic():
     sleep(30)
 
 def demo_threaded_function():
-    SouthAtlantic()
-    if global_vars.thread == False: return
-    Indian()
-    if global_vars.thread == False: return
-    WestPacific()
-    if global_vars.thread == False: return
-    EastPacific()
-    if global_vars.thread == False: return
-    NorthAtlantic()
-    if global_vars.thread == False: return
+    while 1:
+        SouthAtlantic()
+        if global_vars.thread == False: break
+        Indian()
+        if global_vars.thread == False: break
+        WestPacific()
+        if global_vars.thread == False: break
+        EastPacific()
+        if global_vars.thread == False: break
+        NorthAtlantic()
+        if global_vars.thread == False: break
 
 def startDemoThread():
     global_vars.thread = True
