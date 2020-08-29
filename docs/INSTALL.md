@@ -59,12 +59,12 @@
 ## RUN
 1. Modify `app.conf` file adding the Server's IP and the Master's IP and pass
 
-3. Run the script to create the necessary folder
+2. Run the script to create the necessary folder
    ```
    ./setMasterFiles.py
    ```
 
-2. Run the application
+3. Run the application
     ```
     ./startDjango.py
     ```
