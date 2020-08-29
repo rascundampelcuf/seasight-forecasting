@@ -26,20 +26,16 @@ def sendKmlToLG(main, slave):
     command = "sshpass -p {} scp $HOME/{}Seasight-Forecasting/django/seasight_forecasting/static/img/colorbar.png {}:/var/www/html/SF/colorbar.png".format(global_vars.lg_pass, global_vars.project_location, global_vars.lg_IP)
     print(command)
     os.system(command)
-    string = blankKML(str(global_vars.screen_for_colorbar))
-    command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " " + string
-    print(command)
-    os.system(command)
+
     command = "sshpass -p " + global_vars.lg_pass + " scp $HOME/" + global_vars.project_location \
         + "Seasight-Forecasting/django/" + global_vars.kml_destination_path + slave + " " \
         + global_vars.lg_IP + ":/var/www/html/kml/slave_" + str(global_vars.screen_for_colorbar) + ".kml"
     print(command)
     os.system(command)
 
-    msg = "http://" + global_vars.lg_IP + ":81/SF/" + global_vars.kml_destination_filename + "?id=" + str(int(time()*100))
+    msg = "http:\/\/" + global_vars.lg_IP + ":81\/\SF\/" + global_vars.kml_destination_filename.replace("/", "\/") + "?id=" + str(int(time()*100))
     command = "sshpass -p " + global_vars.lg_pass + " ssh " + global_vars.lg_IP \
-        + " \"sed -i \"1s/.*/" + msg + "/var/www/html/kmls.txt\""
+        + " \"sed -i \'1s/.*/" + msg + "/\' /var/www/html/kmls.txt\""
     print(command)
     os.system(command)
 
